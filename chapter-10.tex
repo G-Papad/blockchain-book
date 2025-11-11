@@ -11,13 +11,13 @@ transaction acts on the state is by consuming some UTXOs (which are removed from
 and by producing some new UTXOs (which are added to the state). When all transactions have been
 applied, we arrive at the final state $\st_{|L|}$.
 
-There are two layers at play here. First, the chain protocol, namely producing blocks and
-picking the longest chain. Second, the transactions on top. The chain protocol is responsible
+There are two layers at play here. First, the chain protocol producing blocks and
+picking the longest chain. Second, the layer handling the transactions on top. The chain protocol is responsible
 for ordering transactions, but is agnostic to the transaction semantics. The transaction semantics
 are also agnostic to the chain protocol, relying on it only for ordering. The two layers interoperate
-with each other when the chain protocol needs to validate a block, which requires reaching out to
+with each other when the chain protocol needs to validate a block, which requires asking the
 transaction layer to validate the transactions in the block.
-We call the layer responsible for ordering transactions the \emph{consensus layer}\index{Consensus Layer},
+We call the layer responsible for \emph{ordering} transactions the \emph{consensus layer}\index{Consensus Layer},
 and the layer responsible for the transaction semantics the \emph{execution layer}\index{Execution Layer}.
 
 In our transaction semantics, we chose to use UTXOs and to have each state represent a UTXO set,
@@ -25,6 +25,8 @@ because it was useful for representing ownership. We now observe that these sema
 different. We just need to specify what state we start with, and how to transition from state to state.
 We call the state we start with the \emph{initial state} $\st_0$, and the way to transition from state
 to state the \emph{transition function} $\delta$.
+
+\import{./}{algorithms/alg.utxo}
 
 % * The format of the state is implicit (from $\delta$)
 % * All parties agree on st_0, \delta
@@ -234,7 +236,7 @@ A side by side comparison between the two models  of transactions is shown in Fi
          \hline
          Transistion $\delta$ & {Remove consumed outputs and add produced outputs} & \makecell{Update balances \\ $st'[from] \coloneqq st[from] - value$ \\ $st'[to] \coloneqq st[to] + value$} \\
          \hline
-         Validation & {Signature, Law of Conservation, Inputs exist in $st$.} & {Signature, Sufficient balance, Nonce unique.} \\
+         Validation & {Signature, Conservation Law, Inputs exist in $st$.} & {Signature, Sufficient balance, Nonce unique.} \\
          \hline
          Initial State & $\emptyset$ & $\{\}$ \\
          \hline
@@ -439,9 +441,9 @@ Then, adversary $\mathcal{A}'$ returns children of $e_k$ from the verifier tree 
 
 Therefore, the probability of breaking the Merkle tree protocol is the same as the probability of breaking the collision-resistant hash function $H$.
 $$
-Pr[\mathrm{MERKLE}_{\mathcal{A}}(\kappa) = 1] = Pr[\mathrm{Collision}_{\mathcal{A}'}(\kappa) = 1]
+\Pr[\mathrm{MERKLE}_{\mathcal{A}}(\kappa) = 1] = \Pr[\mathrm{Collision}_{\mathcal{A}'}(\kappa) = 1]
 $$
 
-But $Pr[\mathrm{Collision}_{\mathcal{A}'}(\kappa) = 1]$ is negligible by assumption, which means the probability of breaking Merkle tree protocol is also negligible.
+But $\Pr[\mathrm{Collision}_{\mathcal{A}'}(\kappa) = 1]$ is negligible by assumption, which means the probability of breaking Merkle tree protocol is also negligible.
 
 \end{proof}

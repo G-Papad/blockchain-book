@@ -1,0 +1,38 @@
+\begin{algorithm}[H]
+  \caption{\label{alg.utxo}
+  The UTXO transition function.}
+  \begin{algorithmic}[1]
+    \Function{$\delta_\textsf{UTXO}$}{$\st, \tx$}
+      \Let{m}{\{\textsf{ins}\colon[\,], \textsf{outs}\colon \tx.\textsf{outs}\}}
+      \Comment{Create unsigned transaction}
+      \For{$\textsf{in} \in \tx.\textsf{ins}$}
+        \Let{(\textsf{outpoint}, \_)}{\textsf{in}}
+        \Let{m.\textsf{ins}}{m.\textsf{ins} \concat (\textsf{outpoint}, \bot)}
+      \EndFor
+      \For{$\textsf{in} \in \tx.\textsf{ins}$}
+        \Let{(\textsf{outpoint}, \sigma)}{\textsf{in}}
+        \If{$\textsf{outpoint} \not\in \st$}
+          \Comment{Check that input is unspent}
+          \State\Return$\bot$
+        \EndIf
+        \Let{\st[\textsf{outpoint}]}{\bot}\Comment{Consume UTXO}
+        \If{$\lnot\Ver(\textsf{outpoint}.\textsf{pk}, \sigma, m)$}
+          \Comment{Check that signature is valid}
+          \State\Return$\bot$
+        \EndIf
+      \EndFor
+      \Let{\textsf{idx}}{0}
+      \Let{\textsf{txid}}{H(\tx)}
+      \For{$\textsf{out} \in \tx.\textsf{outs}$}
+        \Let{\textsf{outpoint}}{(\textsf{txid}, \textsf{idx})}\Comment{Create new UTXO}
+        \Let{\st[\textsf{outpoint}]}{\textsf{out}}
+        \Let{\textsf{idx}}{\textsf{idx} + 1}
+      \EndFor
+      \CommentLine{Check the Conservation Law}
+      \If{$\sum_{(\textsf{outpoint}, \_) \in \tx.\textsf{ins}} \st[\textsf{outpoint}].v < \sum_{\textsf{out} \in \tx.\textsf{outs}} \textsf{out}.v$}
+        \State\Return$\bot$
+      \EndIf
+      \State\Return$\st$
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
