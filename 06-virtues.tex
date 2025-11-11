@@ -38,7 +38,7 @@ inductive base is the coinbase transaction, where money is generated and the Con
 does not need to be verified, and neither do they need signatures.
 The inductive hypothesis there is that we have a valid UTXO set,
 and the inductive step involves updating the UTXO set by consuming and producing elements,
-checking transaction signatures, and verifying the law of conservation. For block validation,
+checking transaction signatures, and verifying the conservation law. For block validation,
 the inductive base is the genesis block, whose previd does not need to be checked. The inductive
 hypothesis is that the previous chain up to $s$ has been validated, and the inductive step
 involves checking the proof-of-work equation and validating the transactions within.
@@ -623,7 +623,7 @@ and liveness follows from Chain Growth and Chain Quality together.
   \caption{The timeline for \Cref{problem.timeline}.}
   \label{fig.timeline}
 \end{figure}
-        
+
 
 \section*{Further Reading}
 The two chain virtues of Common Prefix and Chain Quality were first defined in the Bitcoin Backbone paper~\cite{backbone}
