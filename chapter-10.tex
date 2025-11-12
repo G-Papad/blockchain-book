@@ -3,7 +3,7 @@
 It is time to take a step back and look at the construction we've built. A chain
 is used to order transactions into a ledger $L$. From this ledger of transactions we can deduce
 a state, which is a UTXO set. This state is obtained as follows. We start with the initial
-state $\st_0 = \emptyset$, the empty UTXO set. We then apply each transaction in the ledger
+state $\st_0 = \{\,\}$, the empty UTXO set. We then apply each transaction in the ledger
 one-by-one as illustrated in \Cref{fig.state-transition}.
 To apply a transaction $\tx_i$, we take the previous state $\st_{i-1}$ and modify
 it, according to what the transaction does, to obtain the next state $\st_i$. The way the
@@ -24,9 +24,22 @@ In our transaction semantics, we chose to use UTXOs and to have each state repre
 because it was useful for representing ownership. We now observe that these semantics could be
 different. We just need to specify what state we start with, and how to transition from state to state.
 We call the state we start with the \emph{initial state} $\st_0$, and the way to transition from state
-to state the \emph{transition function} $\delta$.
+to state the \emph{transition function} $\delta$. The $\delta$ transition function takes a state and
+a transaction and returns a new state if the transaction is valid, or $\bot$ otherwise:
+
+\[
+  \delta(\st, \tx) = \begin{cases}
+    \st' & \text{if $\tx$ is valid w.r.t. $\st$} \\
+    \bot & \text{otherwise} \\
+  \end{cases}
+\]
+
+In the UTXO model which we have already explored in the previous chapters, we can now
+write out the $\delta$ function explicitly, as illustrated in \Cref{alg.utxo}.
+We call this transition function $\delta_{\textsf{UTXO}}$.
 
 \import{./}{algorithms/alg.utxo}
+\import{./}{algorithms/alg.accounts}
 
 % * The format of the state is implicit (from $\delta$)
 % * All parties agree on st_0, \delta
