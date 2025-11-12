@@ -18,6 +18,7 @@ output/*
 *.swp
 *.swo
 *.synctex.gz
+*.fdb_latexmk
 
 ## Intermediate documents:
 *.dvi
