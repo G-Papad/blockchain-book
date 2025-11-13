@@ -3,35 +3,35 @@
   The UTXO transition function.}
   \begin{algorithmic}[1]
     \Function{$\delta_\textsf{UTXO}$}{$\st, \tx$}
-      \Let{m}{\{\textsf{ins}\colon[\,], \textsf{outs}\colon \tx.\textsf{outs}\}}
+      \Let{m}{\{\inputs\colon[\,], \outputs\colon \tx.\outputs\}}
       \Comment{Create unsigned transaction}
-      \For{$\textsf{in} \in \tx.\textsf{ins}$}
-        \Let{(\textsf{outpoint}, \_)}{\textsf{in}}
-        \Let{m.\textsf{ins}}{m.\textsf{ins} \concat (\textsf{outpoint}, \bot)}
+      \For{$\textsf{in} \in \tx.\inputs$}
+        \Let{(\outpoint, \_)}{\textsf{in}}
+        \Let{m.\inputs}{m.\inputs \concat (\outpoint, \bot)}
       \EndFor
       \Let{\st'}{\st}
-      \For{$\textsf{in} \in \tx.\textsf{ins}$}
+      \For{$\textsf{in} \in \tx.\inputs$}
         \Let{(\textsf{outpoint}, \sigma)}{\textsf{in}}
-        \If{$\textsf{outpoint} \not\in \st'$}
+        \If{$\outpoint \not\in \st'$}
           \Comment{Check that input is unspent}
           \State\Return$\bot$
         \EndIf
-        \If{$\lnot\Ver(\st'[\textsf{outpoint}].\textsf{pk}, \sigma, m)$}
+        \If{$\lnot\Ver(\st'[\outpoint].\textsf{pk}, \sigma, m)$}
           \Comment{Check that signature is valid}
           \State\Return$\bot$
         \EndIf
-        \Let{\st'[\textsf{outpoint}]}{\bot}\Comment{Consume UTXO}
+        \Let{\st'[\outpoint]}{\bot}\Comment{Consume UTXO}
       \EndFor
       \CommentLine{Check the Conservation Law}
-      \If{$\sum_{(\textsf{outpoint}, \_) \in \tx.\textsf{ins}} \st[\textsf{outpoint}].v < \sum_{\textsf{out} \in \tx.\textsf{outs}} \textsf{out}.v$}
+      \If{$\sum_{(\outpoint, \_) \in \tx.\inputs} \st[\outpoint].\amount < \sum_{\textsf{out} \in \tx.\outputs} \textsf{out}.\amount$}
         \State\Return$\bot$
       \EndIf
-      \Let{\textsf{idx}}{0}
-      \Let{\textsf{txid}}{H(\tx)}
-      \For{$\textsf{out} \in \tx.\textsf{outs}$}
-        \Let{\textsf{outpoint}}{(\textsf{txid}, \textsf{idx})}\Comment{Create new UTXO}
-        \Let{\st'[\textsf{outpoint}]}{\textsf{out}}
-        \Let{\textsf{idx}}{\textsf{idx} + 1}
+      \Let{\idx}{0}
+      \Let{\txid}{H(\tx)}
+      \For{$\textsf{out} \in \tx.\outputs$}
+        \Let{\outpoint}{(\txid, \idx)}\Comment{Create new UTXO}
+        \Let{\st'[\outpoint]}{\textsf{out}}
+        \Let{\idx}{\idx + 1}
       \EndFor
       \State\Return$\st'$
     \EndFunction

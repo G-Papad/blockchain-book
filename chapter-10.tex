@@ -46,6 +46,16 @@ write out the $\delta$ function explicitly, as illustrated in \Cref{alg.utxo}.
 We call this transition function $\delta_{\textsf{UTXO}}$. This makes precise the informal
 validation procedure described in \Cref{sec.transaction.validation}.
 
+Our function takes as input a state $\st$ and a transaction $\tx$. The state
+$\st$ represents the UTXO set with a mapping from \emph{outpoints} to
+\emph{outputs}. An outpoint is a tuple $(\txid, \idx)$ where $\txid$ is the
+transaction ID and $\idx$ is the index of a transaction output. An output is a
+tuple $(\pk, \amount)$ where $\pk$ is the public key of the recipient and
+$\amount$ is the amount of money sent. A transaction is a dictionary with
+\emph{inputs} and \emph{outputs} fields. The \emph{inputs} field is a list of
+outpoints that the transaction consumes. The \emph{outputs} field is a list of
+outputs that the transaction produces.
+
 \import{./}{algorithms/alg.utxo}
 \import{./}{algorithms/alg.accounts}
 
