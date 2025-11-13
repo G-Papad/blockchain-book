@@ -3,13 +3,20 @@
 It is time to take a step back and look at the construction we've built. A chain
 is used to order transactions into a ledger $L$. From this ledger of transactions we can deduce
 a state, which is a UTXO set. This state is obtained as follows. We start with the initial
-state $\st_0 = \{\,\}$, the empty UTXO set. We then apply each transaction in the ledger
+state $\st_0 = \{\,\}$, the empty UTXO map. We then apply each transaction in the ledger
 one-by-one as illustrated in \Cref{fig.state-transition}.
 To apply a transaction $\tx_i$, we take the previous state $\st_{i-1}$ and modify
 it, according to what the transaction does, to obtain the next state $\st_i$. The way the
 transaction acts on the state is by consuming some UTXOs (which are removed from the state)
 and by producing some new UTXOs (which are added to the state). When all transactions have been
 applied, we arrive at the final state $\st_{|L|}$.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7 \columnwidth,keepaspectratio]{figures/tx-state-transition.pdf}
+  \caption{Transitioning state by applying transactions.}
+  \label{fig.state-transition}
+\end{figure}
 
 There are two layers at play here. First, the chain protocol producing blocks and
 picking the longest chain. Second, the layer handling the transactions on top. The chain protocol is responsible
@@ -36,7 +43,8 @@ a transaction and returns a new state if the transaction is valid, or $\bot$ oth
 
 In the UTXO model which we have already explored in the previous chapters, we can now
 write out the $\delta$ function explicitly, as illustrated in \Cref{alg.utxo}.
-We call this transition function $\delta_{\textsf{UTXO}}$.
+We call this transition function $\delta_{\textsf{UTXO}}$. This makes precise the informal
+validation procedure described in \Cref{sec.transaction.validation}.
 
 \import{./}{algorithms/alg.utxo}
 \import{./}{algorithms/alg.accounts}
@@ -63,13 +71,6 @@ Certain aspects of the validation concern the \emph{consensus layer}\index{Conse
 which pertains to checking the consensus contents of blocks: The ancestry relation,
 the genesis block, the proof-of-work, the timestamps, the difficulty adjustment mechanism.
 These checks pertain to the \emph{structural validation} of blocks.
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.7 \columnwidth,keepaspectratio]{figures/tx-state-transition.pdf}
-  \caption{Transitioning state by applying transactions.}
-  \label{fig.state-transition}
-\end{figure}
 
 \section{Accounts Model}
 
