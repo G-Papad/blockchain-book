@@ -27,6 +27,8 @@ transaction layer to validate the transactions in the block.
 We call the layer responsible for \emph{ordering} transactions the \emph{consensus layer}\index{Consensus Layer},
 and the layer responsible for the transaction semantics the \emph{execution layer}\index{Execution Layer}.
 
+\section{The UTXO Transition Function}
+
 In our transaction semantics, we chose to use UTXOs and to have each state represent a UTXO set,
 because it was useful for representing ownership. We now observe that these semantics could be
 different. We just need to specify what state we start with, and how to transition from state to state.
@@ -46,6 +48,8 @@ write out the $\delta$ function explicitly, as illustrated in \Cref{alg.utxo}.
 We call this transition function $\delta_{\textsf{UTXO}}$. This makes precise the informal
 validation procedure described in \Cref{sec.transaction.validation}.
 
+\import{./}{algorithms/alg.utxo}
+
 Our function takes as input a state $\st$ and a transaction $\tx$. The state
 $\st$ represents the UTXO set with a mapping from \emph{outpoints} to
 \emph{outputs}. An outpoint is a tuple $(\txid, \idx)$ where $\txid$ is the
@@ -54,9 +58,25 @@ tuple $(\pk, \amount)$ where $\pk$ is the public key of the recipient and
 $\amount$ is the amount of money sent. A transaction is a dictionary with
 \emph{inputs} and \emph{outputs} fields. The \emph{inputs} field is a list of
 outpoints that the transaction consumes. The \emph{outputs} field is a list of
-outputs that the transaction produces.
+outputs that the transaction produces. We assume that the transaction input to
+$\delta$ is well-typed, e.g., that each $\amount$ is non-negative. Of course,
+this syntactic validity has to be verified by the implementation.
 
-\import{./}{algorithms/alg.utxo}
+If you're implementing this, you may be tempted to check all inputs against the
+previous UTXO set $\st$ and, after the transaction has been validated, remove
+them to produce $\st'$.  A pitfall in this implementation is that it allows two
+separate inputs to refer to the same UTXO, a double spending within a single
+transaction. It is avoided here by dynamically updating $\st'$ after each input
+is checked.
+
+\section{The Accounts Transition Function}
+
+The UTXO model is reminiscent of physical banknotes and coins. Each banknote or
+coin is always spent in its entirety, even though other coins may be given as
+change. I can keep track of the balance of my wallet by adding up the values of
+all the unspent coins in my wallet. I pay you by transferring the ownership of a
+coin to you.
+
 \import{./}{algorithms/alg.accounts}
 
 % * The format of the state is implicit (from $\delta$)
