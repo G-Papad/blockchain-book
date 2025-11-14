@@ -4,7 +4,7 @@
   \begin{algorithmic}[1]
     \Function{$\delta_\textsf{account}$}{$\st, \tx$}
       \CommentLine{Check sufficient balance}
-      \If{$\tx.\textsf{from} \not\in \st \lor \st[\tx.\textsf{from}].\textsf{balance} < \tx.\textsf{value}$}
+      \If{$\tx.\textsf{from} \not\in \st \lor \st[\tx.\textsf{from}].\textsf{balance} < \tx.\textsf{value} + \tx.\textsf{fee}$}
         \State\Return$\bot$
       \EndIf
       \If{$\tx.\textsf{nonce} \neq \st[\tx.\textsf{from}].\textsf{nonce} + 1$}\Comment{Check nonce is unique}
@@ -21,7 +21,7 @@
         \Comment{Check signature}
         \State\Return$\bot$
       \EndIf
-      \Let{\st[\tx.\textsf{from}].\textsf{balance}}{\st[\tx.\textsf{from}].\textsf{balance} - \tx.\textsf{value}}
+      \Let{\st[\tx.\textsf{from}].\textsf{balance}}{\st[\tx.\textsf{from}].\textsf{balance} - \tx.\textsf{value} - \tx.\textsf{fee}}
       \Let{\st[\tx.\textsf{from}].\textsf{nonce}}{\st[\tx.\textsf{from}].\textsf{nonce} + 1}
       \If{$\tx.\textsf{to} \not\in \st$}\Comment{Check account exists}
         \Let{\st[\tx.\textsf{to}]}{\{\textsf{balance}\colon 0, \textsf{nonce}\colon 0\}}
