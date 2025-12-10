@@ -10,13 +10,8 @@
       \If{$\tx.\textsf{nonce} \neq \st[\tx.\textsf{from}].\textsf{nonce} + 1$}\Comment{Check nonce is unique}
         \State\Return$\bot$
       \EndIf
-      \Let{m}{\{
-        \textsf{from}\colon \tx.\textsf{from},
-        \textsf{to}\colon \tx.\textsf{to},
-        \textsf{value}\colon \tx.\textsf{value},
-        \textsf{nonce}\colon \tx.\textsf{nonce},
-        \sigma\colon \bot
-      \}}
+      \Let{m}{\tx}
+      \Let{m.\sigma}{\bot}\Comment{Consider the unsigned transaction}
       \If{$\lnot\Ver(\tx.\textsf{from}, \tx.\sigma, m)$}
         \Comment{Check signature}
         \State\Return$\bot$
