@@ -136,8 +136,7 @@ First, we verify the validity of the transaction. Namely, we check that the \emp
 Next, we check that the signature validates with the \emph{from} account, which is a public key. Lastly, we
 update the balances of both accounts to reflect the transfer.
 
-\section{Replay Attacks}
-
+Unfortunately, we are not done yet.
 A problem arises if our accounts transaction is formatted as described above. Imagine that Alice buys coffee
 from Eve every morning and that the coffee always costs $5$ units. How would these transactions look like?
 They would all be the same! Our ledger must record each of these identical but separate payments individually.
@@ -173,7 +172,6 @@ final state and transaction structures are depicted in
             \hhline{|=|=|=|=|=|=|}
             Dionysis & Odysseas & 1 & 0 & 8 & $\bot$ \\
             \hline
-            \hline
     \end{tabular}
     \caption{Example accounts transaction with nonces.}
     \label{tbl.accountsTxWithNonce}
@@ -196,37 +194,57 @@ We summarize the difference between the two models in \Cref{tbl.UTXOvsAccounts}.
 
 \begin{table}[htbp!]
     \centering
-    \begin{tabular}{m{3cm}|m{4cm}|m{6.5cm}}
-         & UTXO & Accounts  \\
-         \hline
-         Real System & Bitcoin & Ethereum \\
-         \hline
-         Transaction $tx$ & \begin{tikzpicture}[
-         txnode/.style={thin,draw=black,circle},
-         ]
-         \node[txnode] (tx) at (0,0) {tx};
-         \draw[->] (-1,0.5) -- (tx);
-         \draw[->] (-1,-0.5) -- (tx);
-         \draw[->] (tx) -- (1, 0.5);
-         \draw[->] (tx) -- (1,-0.5);
-         \end{tikzpicture}
-         &
-         \begin{tabular}{|c|c|c|c|c|c|}
-         \hline
-         From & To & Val & Fee & \textbf{nonce} & {$\sigma$} \\
-         \hline
-         \end{tabular} \\
-         \hline
-         State update & {Remove consumed outputs and add produced outputs} & \makecell{Update balances \\ $st'[from] \coloneqq st[from] - value$ \\ $st'[to] \coloneqq st[to] + value$} \\
-         \hline
-         Transaction validation & {Signature, Conservation Law, Inputs exist in $st$.} & {Signature, Sufficient balance, Nonce unique.} \\
-         \hline
-         Initial state & $\emptyset$ & $\{\}$ \\
-         \hline
+    \makebox[\textwidth][c]{
+    \begin{tabular}{|m{3cm}|m{4cm}|m{6.5cm}|}
+        \hline
+        & \textbf{UTXO} & \textbf{Accounts} \\ \hhline{|=|=|=|}
+        \textbf{Real System} & Bitcoin & Ethereum \\
+        \hline
+        \textbf{Transaction $tx$} & \begin{tikzpicture}[
+        txnode/.style={thin,draw=black,circle},
+        ]
+        \node[txnode] (tx) at (0,0) {tx};
+        \draw[->] (-1,0.5) -- (tx);
+        \draw[->] (-1,-0.5) -- (tx);
+        \draw[->] (tx) -- (1, 0.5);
+        \draw[->] (tx) -- (1,-0.5);
+        \end{tikzpicture}
+        &
+        \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        From & To & Value & Fee & Nonce & {$\sigma$} \\
+        \hline
+        \end{tabular} \\
+        \hline
+        \textbf{State update} & {Remove consumed outputs and add produced outputs} & {Decrease balance of sender, increase balance of receiver} \\
+        \hline
+        \textbf{Transaction validation} & {Signature, Inputs exist in $\st$.} & {Signature, Nonce unique.} \\
+        \hline
+        \textbf{Conservation Law} & {
+            $\sum \textsf{in.v} \geq \sum \textsf{out.v}$
+        } & {
+            $\tx.\textsf{from}.\textsf{balance} \geq \tx.\textsf{value}$
+        } \\
+        \hline
+        \textbf{Fees} & {$\sum \textsf{in.v} - \sum \textsf{out.v}$} & {Explicit $\tx\textsf{.fee}$} \\
+        \hline
+        \textbf{Initial state} & $\emptyset$ & $\{\}$ \\
+        \hline
     \end{tabular}
+    }
     \caption{Side by side comparison of the UTXO and accounts models.}
     \label{tbl.UTXOvsAccounts}
 \end{table}
+
+Beyond the syntactic differences highlighted in the table, there is a deeper difference between the two models.
+In the case of UTXO, when given an unordered set of mempool transactions for which it is guaranteed that there
+exists a valid ordering, it is easy to find a valid ordering. Simply topologically sort the transaction graph.
+In the case of accounts, one may be tempted to order transactions in a greedy way, namely by including the first
+transaction that can validly be included first, followed by the second, and so on. However, this algorithm does
+not necessarily always produce a valid ordering of transactions, even if one exists.
+It is not obvious how to efficiently find such an ordering.
+
+% TODO(Odysseas): example of orderable accounts transaction set that is not orderable by the greedy algorithm
 
 The machinery
 we have created solves the \emph{State Machine Replication}\index{State Machine Replication}
