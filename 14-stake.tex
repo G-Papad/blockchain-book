@@ -11,12 +11,57 @@ coins in our system are in honest hands.
 This is what gave rise to the assumption we made when we designed proof-of-work consensus,
 namely that the majority of computational power is in honest hands. Since the majority of
 money belongs to honest parties, and these parties are free to purchase computational power,
-we deduce that the majority of computational power is honest.
-% This conclusion is imperfect...
+we deduce that the majority of computational power is honest. However, this conclusion is imperfect
+for a couple of reasons. First, the adversary may have access to better hardware than the honest
+parties, for example because they control a GPU production company. Second, even if the adversary
+has access to the same hardware market, economics of scale apply; purchasing equipment
+worth $10\times$ the cost gets her more than $10\times$ the computational power. Thus,
+even if the adversary controls a minority of the money, if that money is concentrated,
+she may be able to obtain a majority of the computational power.
+
+Besides these concerns pertaining to the truthfulness of our assumptions,
+proof-of-work has another major drawback: it is energy-intensive due to mining.
+The more secure we want the network to be, the more energy we have to expend collectively
+on mining. This energy expenditure is not per se ``wasted'' because it provides security.
+Nevertheless, it would be nice to avoid it if we can find a way to obtain the same level
+of security without it.
+
+It seems that we have been using the honest computational majority assumption as an
+imperfect \emph{proxy} for the underlying social assumption of money being in honest hands.
+Ideally, we would like to directly use the belief that the majority of money is in honest hands
+as our assumption. We call this the \emph{honest stake majority assumption}\index{Honest Stake Majority Assumption}.
+
+\section{The Proof-of-Stake Inequality}
+
+Recall that the proof-of-work inequality is $H(s \concat x \concat \ctr) \leq T$, where $s$ is the previous block,
+$x$ is the commitment to the transactions, and $\ctr$ is the nonce. Brute forcing the nonce in this inequality
+gives rise to rare events, which are necessary to ensure safety (e.g., avoid double spends). The more compute
+one has, the more $\ctr$ values one can try, and the higher the probability of finding a ticket.
+Our purpose now is to alter this inequality so that we still have rare events, but no brute forcing is
+required, thereby bypassing the computational needs. Instead, we want the probability of finding a ticket
+to depend on how much money one has.
+
+When we constructed the execution layer, we invented two models that represent the money in the system:
+the \emph{UTXO model} and the \emph{account model}. But here we have a chicken-and-egg problem:
+To build the execution layer, we need the consensus layer, which requires the ticketing mechanism;
+but to build a proof-of-stake ticketing mechanism, we need the execution layer that holds the information
+of money ownership. We will put this problem aside for the moment and return to it later.
+For now, we will assume that the population of money holders is fixed ahead of time, with
+each member of that population holding exactly one unit of money. The distribution of money
+across parties is called the \emph{stake distribution}\index{Stake Distribution}.
+We also assume that this
+population is known ahead of time, meaning that all parties have a list with the public keys
+of all money holders at the beginning of the execution. This list of public keys is called a
+\emph{Public Key Infrastructure}\index{Public Key Infrastructure} (PKI)\index{PKI}.
+
+Let us take a first shot at altering the inequality.
+% TODO: make T fixed across all parties, remove ctr, add the pk
+% TODO: speak of grinding attacks on (x, s), then remove x and s
+% TODO: later add the slot
+% TODO: observe that multiple (or no) leaders can be elected
 
 {\color{red}
 \begin{itemize}
-\item The proof-of-work environmental impact
 \item The honest stake assumption
 \item Grinding attacks
 \item Proof-of-stake time: The slot
@@ -34,5 +79,6 @@ we deduce that the majority of computational power is honest.
 \item The proof-of-stake inequality
 \item The Ouroboros Praos protocol
 \item Aggregation independence
+\item Additional reading: egalitarianism
 \end{itemize}
 }
