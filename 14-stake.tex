@@ -54,8 +54,43 @@ population is known ahead of time, meaning that all parties have a list with the
 of all money holders at the beginning of the execution. This list of public keys is called a
 \emph{Public Key Infrastructure}\index{Public Key Infrastructure} (PKI)\index{PKI}.
 
-Let us take a first shot at altering the inequality.
-% TODO: make T fixed across all parties, remove ctr, add the pk
+Let us take a first shot at altering the inequality. Because we have assumed our population
+is static, the target $T$ will be a fixed constant. Let us remove the nonce $\ctr$ from the inequality,
+since its sole purpose was to capture computational effort. We want each of our participants
+to have an independent chance of finding a ticket, so we will add their public key $\pk$ to the
+inequality.
+
+\[
+  H(s \concat x \concat \pk) \leq T
+\]
+
+If someone succeeds in finding a ticket, we call them the \emph{block proposer}\index{Block Proposer}.
+
+Consider the beginning of the execution in which $s$ is set to the genesis block and $x$ is empty,
+as no transactions have appeared in the mempool yet. Given this particular $s$ and $x$, an honest
+party holding the public key $\pk$ has exactly one
+shot at finding a ticket. We would like each corrupted party holding a public key to also get
+exactly one shot. But nobody forces the adversary to fix their $x$! Given just one
+corrupted public key $\pk$, the adversary can try brute-forcing multiple values for $x$
+by locally trialing transactions of her own. This creates an unfair advantage for the adversary,
+giving her a much higher probability of success compared to her stake. Somehow, the adversary
+has utilized her computational power to beat the honest parties who are just using their stake.
+When computational power is abused within stake systems, we call it a
+\emph{grinding attack}\index{Grinding Attack}. Another way of mounting a grinding attack, when
+the mempool is not empty, is to brute-force across valid permutations of the mempool $\overline{x}$.
+Yet another way to grind is when the execution has already produced some past blocks.
+The adversary can use $s$ to choose to extend whichever fork enables her to satisfy the inequality.
+To avoid grinding attacks, we must remove $s$ and $x$ from the inequality and obtain
+\[
+  H(\pk) \leq T\,.
+\]
+
+This inequality does not look very healthy. We have lost all information about the block
+content. Where did the transactions and ancestry go? We will fix this issue by requiring
+the proposer to accompany the ticket with a separate \emph{signed} block header.
+
+% TODO: show block signature
+% Block = (H(r \concat \pk), (s \concat x \concat \sigma))
 % TODO: speak of grinding attacks on (x, s), then remove x and s
 % TODO: later add the slot
 % TODO: observe that multiple (or no) leaders can be elected
@@ -63,7 +98,6 @@ Let us take a first shot at altering the inequality.
 {\color{red}
 \begin{itemize}
 \item The honest stake assumption
-\item Grinding attacks
 \item Proof-of-stake time: The slot
 \item Combining honest and adversarial randomness to obtain unbiased randomness
 \item Pseudorandomness: Getting more randomness from little randomness
@@ -82,3 +116,5 @@ Let us take a first shot at altering the inequality.
 \item Additional reading: egalitarianism
 \end{itemize}
 }
+
+% Reading: (advanced) Longest Chain Consensus Under Bandwidth Constraint
