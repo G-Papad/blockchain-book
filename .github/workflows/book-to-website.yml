@@ -1,0 +1,77 @@
+name: Build PDF and publish to website
+
+on:
+  push:
+    branches: ["master"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout book repo
+        uses: actions/checkout@v4
+
+      - name: Install LaTeX toolchain (XeLaTeX + bibtex + index + glossaries)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            make \
+            texlive-xetex \
+            texlive-latex-extra \
+            texlive-extra-utils \
+            texlive-fonts-recommended \
+            texlive-fonts-extra \
+            texlive-lang-greek \
+            texlive-science
+          xelatex --version
+          bibtex --version
+          makeindex --help | head -n 2 || true
+          makeglossaries --version || true
+
+      - name: Build PDF (Makefile)
+        run: make
+
+      - name: Verify PDF exists
+        run: |
+          test -f "./blockchain-foundations.pdf"
+          ls -lh "./blockchain-foundations.pdf"
+
+      - name: Setup SSH key for pushing to website repo
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.WEBSITE_DEPLOY_KEY }}
+
+      - name: Trust github.com host key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Clone website repo
+        run: |
+          git clone --depth 1 --branch main \
+            git@github.com:commonprefix/blockchain-foundations-site.git website
+
+      - name: Copy PDF into website/public
+        run: |
+          mkdir -p "website/public"
+          cp -f "./blockchain-foundations.pdf" "website/public/blockchain-foundations.pdf"
+
+      - name: Commit and push if changed
+        working-directory: website
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git config user.name "book-ci"
+          git config user.email "book-ci@users.noreply.github.com"
+
+          git add public/blockchain-foundations.pdf
+          git commit -m "Update blockchain-foundations.pdf (from book repo)"
+          git push origin main
