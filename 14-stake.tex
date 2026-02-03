@@ -33,7 +33,7 @@ as our assumption. We call this the \emph{honest stake majority assumption}\inde
 
 \section{The Proof-of-Stake Inequality}
 
-Recall that the proof-of-work inequality is $H(s \concat x \concat \ctr) \leq T$, where $s$ is the previous block,
+Recall that the proof-of-work inequality is $H(s \concat x \concat \ctr) \leq T$, where $s$ is the previous blockid,
 $x$ is the commitment to the transactions, and $\ctr$ is the nonce. Brute forcing the nonce in this inequality
 gives rise to rare events, which are necessary to ensure safety (e.g., avoid double spends). The more compute
 one has, the more $\ctr$ values one can try, and the higher the probability of finding a ticket.
@@ -97,36 +97,60 @@ When computational power is abused within stake systems, we call it a
 \emph{grinding attack}\index{Grinding Attack}. Another way of mounting a grinding attack, when
 the mempool is not empty, is to brute-force across valid permutations of the mempool $\overline{x}$.
 Yet another way to grind is when the execution has already produced some past blocks.
-The adversary can use $s$ to choose to extend whichever fork enables her to satisfy the inequality.
+The adversary can alter $s$ and choose to extend whichever fork enables her to satisfy the inequality.
 To avoid grinding attacks, we must remove $s$ and $x$ from the inequality and obtain
 \[
   H(\pk) \leq T\,.
 \]
 
-This inequality does not look very healthy. We have lost all information about the block
+This inequality does not look very healthy. The first problem is that we have lost all information about the block
 content. Where did the transactions and ancestry go? We will fix this issue by requiring
 the proposer to accompany the ticket with a separate \emph{signed} block header.
+At this time, we have separated the ticket from the block header.
+The \emph{ticket} is a proof that the proposer is legitimate; for now, just their
+public key. This ticket is verifiable by the rest of the parties (by redoing the hash and checking
+the inequality) and allows them to know who the proposers are. Now, when the proposer issues a block,
+they broadcast the tuple
+\[
+(\pk, (s \concat x \concat \sigma))\,,
+\]
+where $\pk$ is the ticket, $s \concat x \concat \sigma$ is the block header,
+and $\sigma$ is the signature of the proposer. Upon receiving this tuple, the recipient checks
+that:
 
-% TODO: show block signature
+\begin{enumerate}
+  \item The ticket $\pk$ is valid by ensuring that $H(\pk) \leq T$.
+  \item The signature $\sigma$ is valid by checking that $\Ver(\pk, (s \concat x), \sigma)$.
+\end{enumerate}
+
+Note that, naturally, the plaintext that the proposer signs misses the signature.
+
+The second problem is that our system is static. Instead,
+we would like to create a dynamic system in which parties regularly alternate
+between taking the proposer role as time passes. To do this, we will split time
+into fixed-size intervals (in the order of a few seconds)
+called \emph{slots}\index{Slot}, with the intent of
+having approximately one block produced in each slot. We will number slots using
+the natural numbers $0, 1, 2, \ldots$. We want the slot to be longer than the
+network delay so that a block honestly produced during one slot is seen by
+all honest parties before the next slot begins. Contrary to rounds,
+slot numbers will be used by our protocol, whereas rounds are an analysis
+tool. But the two have a concrete relationship, which is that the slot duration
+is at least $\Delta$ rounds.
+
 % Block = (H(r \concat \pk), (s \concat x \concat \sigma))
-% TODO: speak of grinding attacks on (x, s), then remove x and s
 % TODO: later add the slot
 % TODO: observe that multiple (or no) leaders can be elected
 
 {\color{red}
 \begin{itemize}
 \item The honest stake assumption
-\item Proof-of-stake time: The slot
 \item Combining honest and adversarial randomness to obtain unbiased randomness
 \item Pseudorandomness: Getting more randomness from little randomness
 \item Epoch randomness
 \item Slot leaders
 \item The Ouroboros protocol
 \item k+1 blocks in any continuous 2k slots
-\item Secret Sharing Schemes
-\item Verifiable Secret Sharing
-\item Publicly Verifiable Secret Sharing
-\item Force-opening commitments using honest majority
 \item Verifiable random functions
 \item The proof-of-stake inequality
 \item The Ouroboros Praos protocol
