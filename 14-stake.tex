@@ -45,7 +45,13 @@ When we constructed the execution layer, we invented two models that represent t
 the \emph{UTXO model} and the \emph{account model}. But here we have a chicken-and-egg problem:
 To build the execution layer, we need the consensus layer, which requires the ticketing mechanism;
 but to build a proof-of-stake ticketing mechanism, we need the execution layer that holds the information
-of money ownership. We will put this problem aside for the moment and return to it later.
+of money ownership. The problem is even more pronounced: The very assumption that the stake majority
+is honest rests upon a social belief pertaining to the coins produced at the execution layer.
+We believe money is in honest hands; this belief gives a stake distribution; using this stake
+distribution, we build a lottery; using this lottery, we create the money which we believed
+to be in honest hands in the first place.
+We illustrate this recursive dependency in \Cref{fig.pos-chicken-egg}.
+We will put this problem aside for the moment and return to it later.
 For now, we will assume that the population of money holders is fixed ahead of time, with
 each member of that population holding exactly one unit of money. The distribution of money
 across parties is called the \emph{stake distribution}\index{Stake Distribution}.
@@ -53,6 +59,18 @@ We also assume that this
 population is known ahead of time, meaning that all parties have a list with the public keys
 of all money holders at the beginning of the execution. This list of public keys is called a
 \emph{Public Key Infrastructure}\index{Public Key Infrastructure} (PKI)\index{PKI}.
+
+\begin{figure}[htbp!]
+  \centering
+  \includegraphics[width=0.7 \columnwidth,keepaspectratio]{figures/pos-chicken-egg.pdf}
+  \caption{The chicken-and-egg problem of proof-of-stake. The bottom layer is a social consensus
+           assumption needed for money to be useful. Above it is our cryptographic assumption that
+           the majority of coins are in honest hands, which is supported by the underlying
+           social contract. Using this assumption, we construct the proof-of-stake consensus
+           layer, on top of which an execution layer that creates money is built. This money
+           is exactly the money that the bottom-layer social contract pertains to.}
+  \label{fig.pos-chicken-egg}
+\end{figure}
 
 Let us take a first shot at altering the inequality. Because we have assumed our population
 is static, the target $T$ will be a fixed constant. Let us remove the nonce $\ctr$ from the inequality,
