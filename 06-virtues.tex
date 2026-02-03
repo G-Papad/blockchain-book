@@ -601,6 +601,18 @@ and liveness follows from Chain Growth and Chain Quality together.
           \item What is the height of the tip of the longest chain? What is the
                 chain quality of the longest chain?
         \end{enumerate}
+  \item We make a change to the longest chain proof-of-work protocol:
+        A block is still valid if the proof-of-work inequality $H(s \concat x \concat \ctr) < T$
+        holds. However, we propose two alternative modifications to the way the blockid is calculated:
+
+        \begin{enumerate}
+          \item $s' = H(s \concat x)$
+          \item $s' = H(s)$
+        \end{enumerate}
+
+        In both cases, all of $s, x$, and $\ctr$ are stored as well as propagated to the network
+        and used to verify block validity. Is this protocol still secure in each of these cases?
+        If yes, give an intuition of why. If not, give an attack.
 \end{problems}
 
 \begin{figure}[htbp!]
