@@ -129,7 +129,9 @@ The second problem is that our system is static. Instead,
 we would like to create a dynamic system in which parties regularly alternate
 between taking the proposer role as time passes. To do this, we will split time
 into fixed-size intervals (in the order of a few seconds)
-called \emph{slots}\index{Slot}, with the intent of
+called \emph{slots}\index{Slot},
+\glsxtrnewsymbol[description={slot}]{slot}{$\slot$}\glsadd{slot}
+with the intent of
 having approximately one block produced in each slot. We will number slots using
 the natural numbers $\slot = 0, 1, 2, \ldots$. We want the slot to be longer than the
 network delay so that a block honestly produced during one slot is seen by
@@ -144,14 +146,26 @@ Let us now add the slot number to the proof-of-stake inequality:
 H(\slot \concat \pk) \leq T
 \]
 
+% TODO: add slot to block header and show new block header here
+
 We have now a dynamic mechanism in which, for every slot, each party has a shot at being
 the block proposer. The way our protocol will work is exactly identical to the proof-of-work longest
 chain protocol. Namely, each honest party maintains a local chain and mempool. Upon receiving
 a new chain from the network, the party validates it and adopts it if it is longer than the local chain.
-Validation of the chain involves checking that all blocks are signed by a public key $\pk$ in the PKI
-that satisfies the proof-of-stake inequality for the given slot.
-At the beginning of each slot, the party checks the proof-of-stake inequality to see if they
-are a block proposer. If so, they create a new block using their local mempool and pointing at the
+Validation involves:
+
+\begin{enumerate}
+  \item Check that the first block is the genesis block.
+  \item Check the ancestry of each block.
+  \item Check that the $\pk$ signing the block is in the PKI.
+  \item Check the proof-of-stake inequality for the given slot and $\pk$.
+  \item Check that the tip has a slot not in the future.
+  \item Check that the block slots are strictly increasing.
+\end{enumerate}
+
+To propose a new block,
+at the beginning of each slot, the party checks the proof-of-stake inequality to see if they
+are a block proposer. If so, they create a new block using their local mempool and point it to the
 tip of their current local chain. They sign this block and broadcast it.
 
 \input{algorithms/alg.pos-round}
