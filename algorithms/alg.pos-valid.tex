@@ -1,0 +1,36 @@
+\begin{figure}[H]
+\begin{algorithm}[H]
+    \caption{\label{alg.pos-valid} The proof-of-stake chain validation algorithm.}
+    \begin{algorithmic}[1]
+        \Function{$\valid$}{$\chain$}
+            \If{$\chain[0] \neq \mathcal{G}$} \Comment{Check genesis}
+                \State\Return{$\false$}
+            \EndIf
+            \If{$\chain[-1].B.\slot > \slot$}
+                \State\Return{$\false$}
+            \EndIf
+            \Let{s}{H(\mathcal{G})}
+            \Let{\slot}{0}
+            \For{$(B, \sigma) \in \chain[1{:}]$} \Comment{Iterate through blocks}
+                \If{$B.s \neq s$} \Comment{Ancestry check}
+                    \State\Return{$\false$}
+                \EndIf
+                \If{$\lnot \Ver(\pk, B, \sigma)$} \Comment{Signature check}
+                    \State\Return{$\false$}
+                \EndIf
+                \CommentLine{PoS inequality check}
+                \If{$\neg \vrfver(B.\pk, B.\slot, B.y, B.\pi) \lor B.y > T$}
+                    \State\Return{$\false$}
+                \EndIf
+                \If{$B.\slot \leq \slot$} \Comment{Slots must increase}
+                    \State\Return{$\false$}
+                \EndIf
+                \Let{\slot}{B.\slot}
+                \Let{s}{H(B)}
+            \EndFor
+            \State\Return{$\true$}
+        \EndFunction
+        \vskip8pt
+    \end{algorithmic}
+\end{algorithm}
+\end{figure}

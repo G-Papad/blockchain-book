@@ -3,6 +3,9 @@
 \newcommand{\CommentLine}[1]{
   \State \(\triangleright\) \textit{#1}
 }
+\renewcommand{\Comment}[1]{
+  \hfill\(\triangleright\) \textit{#1}
+}
 
 \newcommand{\getsrandomly}{\overset{\$}{\gets}}
 \newcommand{\concat}{\,\|\,}
@@ -22,11 +25,15 @@
 \newcommand{\outpoint}{\ensuremath{\mathsf{outpoint}}}
 \newcommand{\amount}{\ensuremath{\mathsf{amount}}}
 \newcommand{\pk}{\ensuremath{\mathsf{pk}}}
+\newcommand{\sk}{\ensuremath{\mathsf{sk}}}
 \newcommand{\slot}{\ensuremath{\mathsf{sl}}}
 
 \newcommand{\Gen}{\mathsf{Gen}}
 \newcommand{\Sig}{\mathsf{Sig}}
 \newcommand{\Ver}{\mathsf{Ver}}
+\newcommand{\vrf}{\mathsf{VRF}}
+\newcommand{\vrfeval}{\vrf\mathsf{.Eval}}
+\newcommand{\vrfver}{\vrf\mathsf{.Ver}}
 
 \def\chain{\mathcal{C}}
 
@@ -38,3 +45,11 @@
 
 \newcommand{\Bmax}{B_\mathrm{max}}
 \newcommand{\score}{\mathrm{score}}
+
+\newcommand{\network}{\textsf{network}}
+\newcommand{\maxmark}{\textsf{maxvalid}}
+\newcommand{\broadcast}{\textsf{broadcast}}
+\newcommand{\now}{\textsf{now}}
+\newcommand{\Round}{\textsf{round}}
+\newcommand{\valid}{\textsf{valid}}
+\newcommand{\exec}{\textsf{execute}}

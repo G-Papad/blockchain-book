@@ -1,0 +1,23 @@
+\begin{figure}[H]
+\begin{algorithm}[H]
+  \caption{\label{alg.pos-round} The proof-of-stake honest party algorithm.}
+  \begin{algorithmic}[1]
+    \Statex
+    \State{$(\pk, \sk)$} \Comment{Key pair}
+    \Let{\chain}{[\mathcal{G}]} \Comment{Local chain initialized with genesis}
+    \Let{\slot}{1}
+    \Function{$\exec$}{$1^\kappa$}
+      \Let{N}{\network()}
+      \Let{\chain}{\maxmark(N)}
+      \Let{(y, \pi)}{\vrfeval(\slot, \sk)}
+      \If{$y \leq T$} \Comment{Check if proposer}
+        \Let{B}{H(\chain[-1].B) \concat x \concat \slot \concat y \concat \pi \concat \pk}
+        \Let{\sigma}{\Sig(\sk, B)}
+        \Let{\chain}{\chain \concat (B, \sigma)}
+      \EndIf
+      \State $\broadcast(\chain)$
+      \Let{\slot}{\slot + 1}
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+\end{figure}
