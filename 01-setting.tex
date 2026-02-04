@@ -376,10 +376,11 @@ In an ideal world, we would like to state that our protocols are unbreakable:
 
 However, this goal is sadly unattainable. When the time comes to generate a secret
 key or a password, we will make these have bit length $\kappa$. Unfortunately, the adversary
-can \emph{guess} such secrets by taking a random guess. If our secret is sampled from the
+can \emph{guess} such secrets by taking a random guess. If our secret is uniformly sampled from the
 set $\{0, 1\}^\kappa$, the set of $\kappa$-bit strings, the probability of the adversary
 guessing correctly will be $2^{-\kappa}$. This is a probability of failure that we are
-willing to accept, as it is unavoidable.
+willing to accept, as it is unavoidable. We call these strings that are highly random
+and almost unguessable \emph{high-entropy}\index{High-entropy} strings.
 
 What happens if an adversary attempts to perform multiple guesses for the secret key?
 Each of these guesses has a probability of success amounting to $\frac{1}{2^\kappa}$.
