@@ -611,7 +611,11 @@ and liveness follows from Chain Growth and Chain Quality together.
         \end{enumerate}
 
         In both cases, all of $s, x$, and $\ctr$ are stored as well as propagated to the network
-        and used to verify block validity. Is this protocol still secure in each of these cases?
+        and used to verify block validity.
+        Consider the situation in which there are no transactions in the network at all (i.e.,
+        $x$ is always empty) as well as the case where there is a high-entropy coinbase transaction
+        in each block.
+        Is each protocol still secure in each of these cases?
         If yes, give an intuition of why. If not, give an attack.
 \end{problems}
 
