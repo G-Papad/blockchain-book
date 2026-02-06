@@ -7,11 +7,11 @@
     \Let{\chain}{[\mathcal{G}]} \Comment{Local chain initialized with genesis}
     \Let{\slot}{1}
     \Function{$\exec$}{$1^\kappa$}
-      \Let{N}{\network()}
-      \Let{\chain}{\maxmark(N)}
-      \Let{(y, \pi)}{\vrfeval(\slot, \sk)}
-      \If{$y \leq T$} \Comment{Check if proposer}
-        \Let{B}{H(\chain[-1].B) \concat x \concat \slot \concat y \concat \pi \concat \pk}
+      \Let{\overline{M}}{\network()}
+      \Let{\chain}{\maxvalid(\overline{M})}
+      \Let{(y, \pi)}{\vrfeval(\sk, \slot)}
+      \If{$y \leq T$} \Comment{Check proof-of-stake inequality}
+        \Let{B}{H(\chain[-1].B) \concat x \concat \slot \concat \pk \concat y \concat \pi}
         \Let{\sigma}{\Sig(\sk, B)}
         \Let{\chain}{\chain \concat (B, \sigma)}
       \EndIf
