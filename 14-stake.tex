@@ -114,18 +114,18 @@ public key. This ticket is verifiable by the rest of the parties (by redoing the
 the inequality) and allows them to know who the proposers are. Now, when the proposer issues a block,
 they broadcast the tuple
 \[
-(\pk, (s \concat x \concat \sigma))\,,
+(\pk, (s \concat x \concat \pk \concat \sigma))\,,
 \]
-where $\pk$ is the ticket, $s \concat x \concat \sigma$ is the block header,
+where $\pk$ is the ticket, $s \concat x \concat \pk \concat \sigma$ is the block header,
 and $\sigma$ is the signature of the proposer. Upon receiving this tuple, the recipient checks
 that:
 
 \begin{enumerate}
   \item The ticket $\pk$ is valid by ensuring that $H(\pk) \leq T$.
-  \item The signature $\sigma$ is valid by checking that $\Ver(\pk, (s \concat x), \sigma)$.
+  \item The signature $\sigma$ is valid by checking that $\Ver(\pk, (s \concat x \concat \pk), \sigma)$.
 \end{enumerate}
 
-Note that, naturally, the plaintext that the proposer signs misses the signature.
+Note that, naturally, the plaintext that the proposer signs is missing the signature.
 
 The second problem is that our system is static. Instead,
 we would like to create a dynamic system in which parties regularly alternate
@@ -142,16 +142,17 @@ slot numbers will be used by our protocol, whereas rounds are an analysis
 tool. But the two have a concrete relationship, which is that the slot duration
 is at least $\Delta$ rounds.
 
-Let us now add the slot number to the proof-of-stake inequality:
-
+Let us now add the slot number to the block header
 \[
-H(\slot \concat \pk) \leq T
+B = s \concat x \concat \slot \concat \pk \concat \sigma
+\]
+and to the proof-of-stake inequality
+\[
+H(\slot \concat \pk) \leq T\,.
 \]
 
-% TODO: add slot to block header and show new block header here
-
 We have now a dynamic mechanism in which, for every slot, each party has a shot at being
-the block proposer. The way our protocol will work is exactly identical to the proof-of-work longest
+the block proposer. The way our protocol works is exactly identical to the proof-of-work longest
 chain protocol. Namely, each honest party maintains a local chain and mempool. Upon receiving
 a new chain from the network, the party validates it and adopts it if it is longer than the local chain.
 Validation involves:
@@ -166,18 +167,28 @@ Validation involves:
 \end{enumerate}
 
 To propose a new block,
-at the beginning of each slot, the party checks the proof-of-stake inequality to see if they
+at the beginning of each slot, the party checks the proof-of-stake inequality to determine if they
 are a block proposer. If so, they create a new block using their local mempool and point it to the
 tip of their current local chain. They sign this block and broadcast it.
+
+We observe that, similar to proof-of-work, within a single slot there can be zero, one, or more
+proposers. We prefer the case where there is exactly one proposer per slot. When there are multiple
+honest proposers per slot, we can have fan-out situations. These will eventually be resolved for the
+same reason they are resolved in proof-of-work.
+
+During validation, we demanded that slots in blocks are not in the future. This requires the
+honest party to keep a local clock and compare this local clock against the slot numbers in the
+blocks they receive. If a block has a slot number in the future, it is rejected. If this check
+was missing, the adversary could check a massive number of future slots in advance and leverage
+all these tickets to create a chain today.
+
+- Comment on slots not in the future
+- Comment on increasing slot numbers
+- Adversarial equivocation
 
 \input{algorithms/alg.pos-round}
 \input{algorithms/alg.pos-valid}
 
-- 0/1/more proposers
-- Adversarial equivocation
-- Increasing slot numbers
-- Add slot to block header
-- Slots not in the future
 - Slashing
 
 % Block = (H(r \concat \pk), (s \concat x \concat \sigma))
