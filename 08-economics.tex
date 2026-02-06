@@ -693,7 +693,7 @@ accurate. We do this by ensuring that the chain is \emph{temporally consistent},
 which involves performing the following checks. Given a chain $\chain$:
 
 \begin{enumerate}
-  \item For all $i$, check that $\chain[i].r \leq \chain[i + 1].r$, i.e. timestamps are non-decreasing.
+  \item For all $i$, check that $\chain[i].r < \chain[i + 1].r$, i.e. timestamps are increasing.
   \item Check that $\chain[-1].r$ is not in the future by comparing it to the local clock.
 \end{enumerate}
 
@@ -865,4 +865,6 @@ matter. There are insidious attacks that can appear. One prominent such
 attack is due to Bahack~\cite{bahack}. For the detailed analysis of the
 security of the variable difficulty protocol, consult the seminal
 work \emph{The Bitcoin Backbone Protocol with Chains of Variable
-Difficulty}~\cite{varbackbone}.
+Difficulty}~\cite{varbackbone}. The reliability and importantce of chain
+timestamps is discussed in detail in the paper \emph{On-Chain Timestamps
+are Accurate}~\cite{timeliness}.
