@@ -151,9 +151,13 @@ and to the proof-of-stake inequality
 H(\slot \concat \pk) \leq T\,.
 \]
 
+\section{Longest Chain Proof-of-Stake}
+
 We have now a dynamic mechanism in which, for every slot, each party has a shot at being
 the block proposer. The way our protocol works is exactly identical to the proof-of-work longest
-chain protocol. Namely, each honest party maintains a local chain and mempool. Upon receiving
+chain protocol. Namely, there is a known genesis block $\mathcal{G}$.
+The PKI is encoded within the genesis block.
+Each honest party maintains a local chain and mempool. Upon receiving
 a new chain from the network, the party validates it and adopts it if it is longer than the local chain.
 Validation involves:
 
@@ -169,22 +173,46 @@ Validation involves:
 To propose a new block,
 at the beginning of each slot, the party checks the proof-of-stake inequality to determine if they
 are a block proposer. If so, they create a new block using their local mempool and point it to the
-tip of their current local chain. They sign this block and broadcast it.
+tip of their current local chain. They sign this block and broadcast it. Identically to the
+proof-of-work longest chain protocol, a block is considered
+\emph{stable} when it is buried under $k$ blocks, and a transaction becomes \emph{confirmed} when it is part
+of the stable chain.
 
 We observe that, similar to proof-of-work, within a single slot there can be zero, one, or more
-proposers. We prefer the case where there is exactly one proposer per slot. When there are multiple
+proposers. We prefer the case where there is exactly one honest proposer per slot which, following
+our terminology from \Cref{chapter.chain}, we name a \emph{convergence opportunity}.
+When there are multiple
 honest proposers per slot, we can have fan-out situations. These will eventually be resolved for the
 same reason they are resolved in proof-of-work.
 
 During validation, we demanded that slots in blocks are not in the future. This requires the
 honest party to keep a local clock and compare this local clock against the slot numbers in the
 blocks they receive. If a block has a slot number in the future, it is rejected. If this check
-was missing, the adversary could check a massive number of future slots in advance and leverage
-all these tickets to create a chain today.
+was missing, the adversary could check a massive number of future slots \emph{in advance} and leverage
+all these tickets to create a chain \emph{today}, whereas the honest parties only test the
+current slot.
+This highlights a fundamental difference between
+proof-of-work and proof-of-stake: In proof-of-work, the parties cannot predict future successes
+until the time of the success actually occurs, exactly because the expenditure of computational
+power takes time. On the other hand, in proof-of-stake, a party can see into the future and
+know in which slots she will be a proposer.
 
-- Comment on slots not in the future
-- Comment on increasing slot numbers
+Dually, we also demanded that the slots of the blocks in a chain are increasing.
+This prevents the adversary from using old blocks in the future. To see this, consider the following
+concrete attack: The adversary sleeps for a long period of time and allows the honest parties
+to produce a chain $\chain$. At some point in time, the adversary wakes up and uses all of her past
+tickets on top of $\chain[{:}-k]$, breaking safety. In proof-of-work, we avoided such issues
+by including $s$ in the ticketing mechanism, meaning proof-of-work needed to be calculated
+\emph{after} the previous block had been mined.
+
 - Adversarial equivocation
+
+\begin{figure}[htbp!]
+  \centering
+  \includegraphics[width=1 \columnwidth,keepaspectratio]{figures/pos-example.pdf}
+  \caption{An example of a proof-of-stake chain.} % TODO: explain it
+  \label{fig.pos-example}
+\end{figure}
 
 \input{algorithms/alg.pos-round}
 \input{algorithms/alg.pos-valid}
