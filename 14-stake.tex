@@ -198,12 +198,12 @@ power takes time. On the other hand, in proof-of-stake, a party can see into the
 know in which slots she will be a proposer.
 
 Dually, we also demanded that the slots of the blocks in a chain are increasing.
-This prevents the adversary from using old blocks in the future. To see this, consider the following
-concrete attack: The adversary sleeps for a long period of time and allows the honest parties
+This prevents the adversary from using old blocks in the future. If the check was missing, the following
+concrete attack would be possible: The adversary sleeps for a long period of time and allows the honest parties
 to produce a chain $\chain$. At some point in time, the adversary wakes up and uses all of her past
-tickets on top of $\chain[{:}-k]$, breaking safety. In proof-of-work, we avoided such issues
-by including $s$ in the ticketing mechanism, meaning proof-of-work needed to be calculated
-\emph{after} the previous block had been mined.
+tickets on top of $\chain[{:}{-k}]$, breaking safety. In proof-of-work, we avoided such issues
+by including $s$ in the ticketing mechanism.  ensuring the proof-of-work is invalidated whenever the
+$s$ contained within is retroactively changed.
 
 - Adversarial equivocation
 
@@ -243,3 +243,14 @@ by including $s$ in the ticketing mechanism, meaning proof-of-work needed to be 
 \section*{Problems}
 
 \section*{Further Reading}
+
+The first provably secure longest-chain proof-of-stake system is Ouroboros~\cite{ouroboros}.
+This protocol is used in practical systems such as Cardano and Polkadot. The first
+construction that uses the proof-of-stake inequality in the way we defined in this chapter
+appears in the Sleepy Model of Consensus~\cite{sleepy-model}. The proper definitions of
+VRFs for use in the proof-of-stake inequality appear in Ouroboros Praos~\cite{praos},
+where the notion of aggregation independence is also introduced.
+
+Before these provably secure constructions, the idea of a proof-of-stake mechanism was
+discussed in the Bitcoin community since 2011, with multiple unproven attempts to implement it
+such as PPCoin.
