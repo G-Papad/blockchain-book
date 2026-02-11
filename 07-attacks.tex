@@ -531,20 +531,20 @@ generated blocks as well. Liveness heals, because Chain Quality heals.
 
 \section*{Further Reading}
 
-The Nakamoto Race was explored in Satoshi's Bitcoin paper. There, he analyzed the probability of
+The Nakamoto Race was explored in Satoshi's Bitcoin paper~\cite{bitcoin}. There, he analyzed the probability of
 the success of a minority adversary mounting the Nakamoto Race attack against a majority of honest
 parties. This is the only attack that Satoshi analyzed. He did not prove that his protocol is secure
 against all adversaries. The longest chain protocol was analyzed and proven secure against \emph{all}
-adversaries in the later work of the Bitcoin Backbone, which we explore in the later chapters of this
+adversaries in the later work of the Bitcoin Backbone~\cite{backbone}, which we explore in the later chapters of this
 book.
 
 In an even later work from 2020,
 \emph{Everything is a Race and Nakamoto Always Wins~\cite{nakamoto-wins}},
-the authors discuss hod Satoshi has been right all along, but we did not know it:
+the authors discover that Satoshi had been right all along, but we did not know it:
 In fact, \emph{any} mining attack an adversary can possibly perform is roughly equivalent
 to a Nakamoto Race.
 
-While the Fan-Out was known to Nakamoto, but was made precise in the Bitcoin Backbone line of
+While the Fan-Out was known to Nakamoto, it was made precise in the Bitcoin Backbone line of
 work, where they argue that
 
 \begin{quote}
@@ -552,3 +552,6 @@ $f$ cannot be too large, because [this would mean] that uniquely
 successful rounds will not produce sufficiently many PoW's to overcome the PoW's
 produced by the adversary.
 \end{quote}
+
+The selfish mining attack was known in the Bitcoin community as folklore since the early days,
+but was more extensively described in the influential paper \emph{Majority is Not Enough}~\cite{selfish}.
