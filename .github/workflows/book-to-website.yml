@@ -62,6 +62,7 @@ jobs:
           cp -f "./blockchain-foundations.pdf" "website/public/blockchain-foundations.pdf"
 
       - name: Commit and push if changed
+        id: push
         working-directory: website
         run: |
           if [ -z "$(git status --porcelain)" ]; then
@@ -75,3 +76,8 @@ jobs:
           git add public/blockchain-foundations.pdf
           git commit -m "Update blockchain-foundations.pdf (from book repo)"
           git push origin main
+          echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Trigger Vercel deployment
+        if: steps.push.outputs.changed == 'true'
+        run: curl -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"
