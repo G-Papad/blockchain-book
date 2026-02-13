@@ -1,4 +1,4 @@
-\chapter{Proof of Stake}\label{chapter.stake}
+\chapter{Proof of Stake \small{\textsf{DRAFT}}}\label{chapter.stake}
 
 In \Cref{chapter.untrusty-world}, we established that money is a social construct:
 Money is made valuable by a counter-party willing to accept it and hold it;
@@ -185,6 +185,7 @@ When there are multiple
 honest proposers per slot, we can have fan-out situations. These will eventually be resolved for the
 same reason they are resolved in proof-of-work.
 
+% TODO: figures about past and future
 During validation, we demanded that slots in blocks are not in the future. This requires the
 honest party to keep a local clock and compare this local clock against the slot numbers in the
 blocks they receive. If a block has a slot number in the future, it is rejected. If this check
@@ -202,15 +203,47 @@ This prevents the adversary from using old blocks in the future. If the check wa
 concrete attack would be possible: The adversary sleeps for a long period of time and allows the honest parties
 to produce a chain $\chain$. At some point in time, the adversary wakes up and uses all of her past
 tickets on top of $\chain[{:}{-k}]$, breaking safety. In proof-of-work, we avoided such issues
-by including $s$ in the ticketing mechanism.  ensuring the proof-of-work is invalidated whenever the
+by including $s$ in the ticketing mechanism, ensuring the proof-of-work is invalidated whenever the
 $s$ contained within is retroactively changed.
 
-- Adversarial equivocation
+Contrary to proof-of-work, in proof-of-stake,
+a successful ticket does not bind the adversary to a particular block.
+Instead, the adversary may use the same ticket to produce multiple blocks
+for the same slot. This is done by simply sending the same ticket with
+multiple signatures over different block headers, potentially to different
+honest recipients, splitting the honest population between different chain tips.
+We call this adversarial behavior an \emph{equivocation}\index{Equivocation}.
+The reason equivocations are possible is because in proof-of-stake, there
+is no additional cost associated with signing more blocks per ticket.
+In a sense, there is \emph{nothing at stake}\index{Nothing at Stake}.
+On the other hand, in the proof-of-work mechanism,
+each new block must be accompanied by a novel
+proof of computational work. Producing that proof of work has a cost
+that cannot be recovered or reused in the future.
+
+In \Cref{fig.pos-example}, we show an example of a proof-of-stake execution.
+Slot numbers are shown as integers at the top.
+Each slot is marked as honest $H$ if at least one honest party is a proposer for that slot;
+as adversarial $\mathcal{A}$ if at least one corrupted party is a proposer for that slot;
+or as $\bot$ if there is no proposer for that slot. Note that multiple parties can be proposers
+for the same slot, hence the case $H / \mathcal{A}$ is possible (slot $8$).
+Slot $0$ is marked as $H$ because the genesis block $\mathcal{G}$ is honest by convention.
+Blocks are shown as blue rectangles and numbered based on their slot number.
+Tickets are shown as circles surrounding the blocks that they accompany.
+Honest tickets are shown in green dotted circles, whereas adversarial tickets are
+shown in red solid circles. In the honest case, each ticket is associated with exactly one block.
+The adversary may produce multiple blocks for the same slot by equivocating (slot $5$),
+or may choose not to produce any block for a given ticket (slot $9$).
+Note that in slot $7$ there are two honest proposers, each producing a different block
+($7$a and $7$b). Each of these blocks extends a different parent chain of the same
+length. At the conclusion of this execution, there is a unique longest chain known to all
+honest parties. This chain has height $8$ and ends in block $10$ honestly produced in slot
+$10$.
 
 \begin{figure}[htbp!]
   \centering
   \includegraphics[width=1 \columnwidth,keepaspectratio]{figures/pos-example.pdf}
-  \caption{An example of a proof-of-stake chain.} % TODO: explain it
+  \caption{An example of a proof-of-stake execution. }
   \label{fig.pos-example}
 \end{figure}
 
