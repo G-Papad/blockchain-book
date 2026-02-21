@@ -495,11 +495,11 @@ and this is a negligible value in $\kappa$.
 A security definition will look like this:
 
 \begin{definition}[Security]
-  A protocol $\Pi$ is secure with respect to game $\textsf{Game}$ if there exists a negligible
-  function $\textsf{negl}(\kappa)$ such that
+  A protocol $\Pi$ is secure with respect to game $\textsf{Game}$ if
 
   \[
-    \forall PPT \mathcal{A}: \Pr[\textsf{Game}_{\Pi,\mathcal{A}}(\kappa) = 1] \leq \negl(\kappa)
+    \forall PPT \mathcal{A}: \exists \negl(\kappa):
+      \Pr[\textsf{Game}_{\Pi,\mathcal{A}}(\kappa) = 1] \leq \negl(\kappa)
   \]
 \end{definition}
 
