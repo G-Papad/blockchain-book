@@ -509,8 +509,8 @@ A security definition will look like this:
   A protocol $\Pi$ is secure with respect to game $\textsf{Game}$ if
 
   \[
-    \forall PPT \mathcal{A}: \exists \negl(\kappa):
-      \Pr[\textsf{Game}_{\Pi,\mathcal{A}}(\kappa) = 1] \leq \negl(\kappa)
+    \forall PPT \mathcal{A}: \exists \text{negligible function } \negl:
+    \Pr[\textsf{Game}_{\Pi,\mathcal{A}}(\kappa) = 1] \leq \negl(\kappa)
   \]
 \end{definition}
 
