@@ -253,43 +253,64 @@ This is captured in the following theorem:
   We need one additional property for $\mathcal{A}'$ to win the 2nd preimage game: It must hold that $x_1 \neq x_2$.
   We will now argue that this is often the case.
 
-  To do this, we draw the input space as a big box with
-  each input illustrated as a pink dot, as shown in Figure~\ref{fig.2preimage-preimage}. There are $2^{2\kappa + 1}$ dots in the big box. We now partition this big box into smaller boxes, grouping each input with the other inputs that have the same image. We move the larger boxes (containing more dots) to the left of the picture and the smaller boxes (containing fewer dots) to the right of the picture.
+  In order for $x_1 \neq x_2$, it must be the case that the $y$ input to the adversary $\mathcal{A}$ must have more than one preimage. We'll call these $y$ \emph{ambiguous} images of the hash. So let's consider the subspace $X = \{ x \in \{0, 1\}^{2\kappa}: \exists x' \in \{0, 1\}^\kappa: x \neq x' \land H(x') = H(x) \}$ of those inputs with an ambiguous image. By
+  the Pigeonhole Principle, the inputs with unambiguous images must be fewer than $2^\kappa$, so $|X| > 2^{2\kappa} - 2^\kappa = 2^\kappa(2^\kappa - 1)$, which makes it large. We will condition our probabilities on the event that $x_1 \in X$.
+  The probability of this event is $\Pr[x_1 \in X] = \frac{|X|}{2^{2\kappa}} = 1 - 2^{-\kappa}$, which is overwhelming. The complementary event has negligible probability $\Pr[x_1 \notin X] = 2^{-\kappa}$.
 
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=\columnwidth,keepaspectratio]{figures/2preimage-preimage.pdf}
-    \caption{A visualization of the counting argument in Theorem~\ref{thm.2preimage-preimage}.}
-    \label{fig.2preimage-preimage}
-  \end{figure}
+  Let us examine if $\mathcal{A}$ continues to succeed under this conditioning. For brevity,
+  let us denote the event $\textsf{preimage-game}_\mathcal{A}(\kappa)$ by $E$ and the event
+  $\textsf{2nd-preimage-game}_{\mathcal{A}'}(\kappa)$ by $E'$.
 
-  We now split the big box into two big partitions exactly in the middle, as illustrated by the vertical dashed line, with $2^{2\kappa}$ dots on the left, and $2^{2\kappa}$ dots on the right (the dashed line may cut one of the smaller boxes in the middle, but this is fine).
+  Applying the law of total probability, we have that
+  \begin{align*}
+    \Pr[E] = \Pr[E \mid x_1 \in X] \Pr[x_1 \in X] + \Pr[E \mid x_1 \notin X] \Pr[x_1 \notin X]\,.
+  \end{align*}
 
-  We now argue that the boxes on the left of the dashed line are large.
+  Solving for $\Pr[\textsf{preimage-game}_\mathcal{A}(\kappa) \mid x_1 \in X]$, we get
+  \begin{align*}
+    \Pr[E \mid x_1 \in X] = \frac{\Pr[E] - \Pr[E \mid x_1 \notin X] \Pr[x_1 \notin X]}{\Pr[x_1 \in X]} \geq\\
+    \Pr[E] - \Pr[E \mid x_1 \notin X] \Pr[x_1 \notin X] \geq
+    \Pr[E] - \Pr[x_1 \notin X] =\\
+    \textsf{non-negl}(\kappa) - \textsf{negl}(\kappa) = \textsf{non-negl}(\kappa)\,.
+  \end{align*}
 
-  \textbf{Claim: } \emph{Each of the boxes to the left of, or on, the dashed line contains at least $2^\kappa$ dots.} To see this, we need a counting argument. Towards a contradiction, suppose that one of the boxes to the left of, or on, the dashed line contains fewer than $2^\kappa$ dots. Then, since the boxes are ordered, each box on the right of the dashed line contains fewer than $2^\kappa$ dots. However, because the output space is only $2^\kappa$, this means that there are at most $2^\kappa$ boxes to the right of the dashed line. This means that, on the right of the dashed line, there can only be fewer than $2^\kappa$ dots $\times 2^\kappa$ boxes = $2^{2\kappa}$ dots. But there are exactly $2^{2\kappa}$ dots to the right of the dashed line by construction. Therefore the claim is true.
+  So the adversary $\mathcal{A}$ still has a non-negligible probability of success under this conditioning.
 
-  Now that we have proven this claim, we can compare the probabilities of success of $\mathcal{A}$ and $\mathcal{A}'$. We will only consider the case where the uniform sampling of $x_1$ by the 2nd preimage challenger falls to the left of the dashed line. This happens with probability $\frac{1}{2}$. If this is the case, then there are at least $2^{\kappa}$ dots in the box of $H(x_1)$.
+  Next, let us calculate the probability of success of $\mathcal{A}'$. Since the assumption
+  was that $\mathcal{A}'$ is successful with negligible probability, for the contradiction
+  it suffices to show that $\Pr[E']$ is non-negligible.
 
-  Therefore, \emph{conditioned} on the fact that $\mathcal{A}$ is successful and that we have landed to the left of the dashed line, the probability of success of $\mathcal{A}'$ is $1 - 2^{-\kappa}$. The overall probability of success of $\mathcal{A}'$ is
+  Using the law of total probability, we have that
+  \begin{align*}
+    \Pr[E'] = \Pr[E' \mid x_1 \in X] \Pr[x_1 \in X] + \Pr[E' \mid x_1 \notin X] \Pr[x_1 \notin X] \geq\\
+    \Pr[E' \mid x_1 \in X] \Pr[x_1 \in X]\,.
+  \end{align*}
 
-  \[
-    \Pr[\textsf{2nd-preimage-game}_{\mathcal{A}'}(\kappa)] \geq \frac{1}{2} (1 - 2^{-\kappa}) \Pr[\textsf{preimage-game}_\mathcal{A}(\kappa)]\,.
-  \]
+  Since $\Pr[x_1 \in X]$ is non-negligible, it suffices to show that $\Pr[E' \mid x_1 \in X]$ is non-negligible.
+  Again let us apply the law of total probability on the event of $\mathcal{A}$ succeeding:
 
-  Since $H$ is 2nd preimage resistant, the probability $\Pr[\textsf{2nd-preimage-game}_{\mathcal{A}'}(\kappa)]$ is negligible.
-  Then so is $\Pr[\textsf{preimage-game}_\mathcal{A}(\kappa)]$, because $\frac{1}{2}$ is a constant and $(1 - 2^{-\kappa})$ is a value larger than $\frac{1}{2}$. Therefore, $H$ is also preimage resistant.
+  \begin{align*}
+    \Pr[E' \mid x_1 \in X] =\\
+    \Pr[E' \mid E \land x_1 \in X] \Pr[E \mid x_1 \in X]
+    + \Pr[E' \mid \neg E \land x_1 \in X] \Pr[\neg E \mid x_1 \in X] \geq\\
+    \Pr[E' \mid E \land x_1 \in X] \Pr[E \mid x_1 \in X]
+  \end{align*}
+
+  Since $\Pr[E \mid x_1 \in X]$ is non-negligible, it suffices to show that $\Pr[E' \mid E \land x_1 \in X]$ is non-negligible. If $E$ is successful, for $E'$ to be successful, it suffices that
+  $x_1 \neq x_2$. Since the adversary $\mathcal{A}$ is only given $y$, the conditioning on
+  $x_1 \in X$ retains the uniform distribution of $x_2$. Since for each $y \in H(X)$ there
+  are at least two $x \in X$ that hash to $y$, the probability of $x_1 \neq x_2$ is at
+  least $\frac{1}{2}$. Therefore
+  $\Pr[E' \mid E \land x_1 \in X] = \Pr[x_1 \neq x_2 \mid E \land x_1 \in X] \geq \frac{1}{2}$,
+  which is non-negligible as desired.
 \end{proof}
 
-Note that in the above proof, the probabilities of success of $\mathcal{A}'$
-and $\mathcal{A}$ are related by an inequality. This is because $\mathcal{A}'$
-may also succeed in case we land to the right of the dashed line, but we are not
-accounting for this probability in our counting.
-
-Additionally, observe how we went in the \emph{forward direction} in this proof:
-Contrary to previous proofs, we did not assume that $\mathcal{A}$ succeeds with non-negligible
-probability at any point in the proof. As we have discussed in the previous chapter,
-this is a cleaner way of writing security proofs, although it takes some getting used to.
+% TODO: write this proof in the forward direction
+% This may allow us to add this comment:
+% Note that in the above proof, the probabilities of success of $\mathcal{A}'$
+% and $\mathcal{A}$ are related by an inequality. This is because $\mathcal{A}'$
+% may also succeed in case we land to the right of the dashed line, but we are not
+% accounting for this probability in our counting.
 
 \subsection*{Hash Security}
 
@@ -565,17 +586,13 @@ else. Lastly, Alice's payment can be verified by invoking \emph{Ver} using $pk$ 
 \begin{problems}
   \item What is an example of a hash function that is not collision resistant, nor preimage resistant, nor
         2nd preimage resistant?
-  \item The proof of Theorem~\ref{thm.2preimage-preimage} is a proof with reference to the illustration. Make it rigorous so that it doesn't speak of images, boxes, and dashed lines. Instead, use exact counting formulas and define appropriate notation to represent the boxes as equivalence classes.
-  \item In the proof of Theorem~\ref{thm.2preimage-preimage}, the probabilities
-    \[
-      \Pr[\textsf{2nd-preimage-game}_{\mathcal{A}'}(\kappa)] \geq \frac{1}{2} (1 - 2^{-\kappa}) \Pr[\textsf{preimage-game}_\mathcal{A}(\kappa)]
-    \]
-    are compared by $\leq$. Why are they not exactly equal?
-  \item Give a simpler proof of Theorem~\ref{thm.2preimage-preimage}.
   \item Combine Theorems~\ref{thm.collision-2preimage} and~\ref{thm.2preimage-preimage} to
         directly show that collision resistance implies preimage resistance.
   \item Let $H:\{0,1\}^* \to \{0,1\}^{\kappa}$ be a collision-resistant hash
         function and define $G(x) = H(H(x))$. Show that $G$ is a
+        collision-resistant hash function.
+  \item Let $H:\{0,1\}^* \to \{0,1\}^{\kappa}$ be a collision-resistant hash
+        function and define $G_\kappa(x) = H_{\lfloor\frac{\kappa}{2}\rfloor}(x[{:}{\lfloor\frac{\kappa}{2}\rfloor}]) \concat H_{\lceil\frac{\kappa}{2}\rceil}(x[{\lfloor\frac{\kappa}{2}\rfloor}{:}])$. Show that $G$ is a
         collision-resistant hash function.
   \item Given a collision resistant hash function
         $H: \{0, 1\}^* \longrightarrow \{0, 1\}^\kappa$, create a hash function
@@ -606,7 +623,7 @@ else. Lastly, Alice's payment can be verified by invoking \emph{Ver} using $pk$ 
           it is not possible to have all three at the same time. In fact, the
           following theorem shows that it is impossible to have collision
           resistance and second preimage resistance at the same time.
-        
+
           \begin{theorem}[Krawczyk's Theorem]
             Let $H: \{0, 1\}^* \longrightarrow \{0, 1\}^\kappa$ be a hash
             function. Then, $H$ is collision resistant if and only if it is not
