@@ -33,7 +33,18 @@ output:
 However, this ideal goal is unattainable.
 Because the hash function has \emph{unlimited} inputs and \emph{limited} outputs,
 there will necessarily exist some \emph{collision} in which multiple inputs correspond
-to the same output. To find a collision, we can start enumerating all the possible
+to the same output.
+
+The result that hash
+functions must \emph{necessarily} have collisions stems from the Pigeonhole
+Principle~\cite{liu}:
+
+\begin{theorem}[Pigeonhole]\index{Pigeonhole Principle}
+  Consider a function $f: A \longrightarrow B$. If $|A| > |B|$, then there must
+  exist $x_1$ and $x_2$ such that $f(x_1) = f(x_2)$.
+\end{theorem}
+
+To find a collision, we can start enumerating all the possible
 inputs to the hash function starting at $0$ and going up to $2^\kappa$. If we have
 not found a collision when we reach $2^\kappa - 1$, then this means that we have taken
 up all of the possible $2^\kappa$ outputs. When we then evaluate the hash function on
@@ -43,14 +54,7 @@ Algorithm~\ref{alg.hash-collision}.
 \import{./}{algorithms/alg.hash-collision}
 
 Of course, as this function has to run through
-$2^{2\kappa}$ combinations, its running time is exponential. The result that hash
-functions must \emph{necessarily} have collisions stems from the Pigeonhole
-Principle~\cite{liu}:
-
-\begin{theorem}[Pigeonhole]\index{Pigeonhole Principle}
-  Consider a function $f: A \longrightarrow B$. If $|A| > |B|$, then there must
-  exist $x_1$ and $x_2$ such that $f(x_1) = f(x_2)$.
-\end{theorem}
+$2^{2\kappa}$ combinations, its running time is exponential.
 
 Instead, we will require that \emph{finding} such collisions is \emph{computationally}
 difficult. We can define this in the form of the collision finding cryptographic game,
@@ -141,7 +145,7 @@ but this will take exponential time.
 \import{./}{algorithms/alg.hash-preimage}
 
 Naturally, we can define the property of \emph{preimage resistance} using a
-cryptographic game.\index{Preimage Resistance}
+cryptographic game, as illustrated in \Cref{alg.preimage-game}.\index{Preimage Resistance}
 
 \import{./}{algorithms/alg.preimage-game}
 
@@ -170,7 +174,7 @@ for us if the adversary, given some $x_1$, can find a \emph{different} $x_2$ tha
 value. We call this property \emph{second preimage resistance}, and it is defined through the following
 game.\index{2nd Preimage Resistance}
 
-In this game, the adversary is given a randomly sampled $(2\kappa+1)$-bit string input $x_1$ by the challenger.
+In this game, the adversary is given a randomly sampled $2\kappa$-bit string input $x_1$ by the challenger.
 The adversary is successful if she can come up with an $x_2 \neq x_1$ that hashes to the same value as $x_1$,
 as illustrated in Algorithm~\ref{alg.2preimage-game}.
 Second preimage resistance is then defined as follows:
@@ -219,8 +223,7 @@ We now show that collision resistance implies 2nd preimage resistance.
     \Pr[\textsf{collision-game}_{H,\mathcal{A}'}(\kappa)]
   \]
 
-  Since $\Pr[\textsf{2nd-preimage-game}_\mathcal{A}(\kappa)]$ is non-negligible, then so is $\Pr[\textsf{collision-game}_{\mathcal{A}'}(\kappa)]$.
-
+  Since $\Pr[\textsf{2nd-preimage-game}_\mathcal{A}(\kappa)]$ is non-negligible, $\Pr[\textsf{collision-game}_{\mathcal{A}'}(\kappa)]$ is also non-negligible.
   Furthermore, the adversary $\mathcal{A}'$ works in polynomial time, and so is also PPT. This contradicts the assumption that $H$ is collision resistant.
 \end{proof}
 
