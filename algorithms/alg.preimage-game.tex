@@ -4,7 +4,7 @@
              game for a hash function $H$.}
     \begin{algorithmic}[1]
         \Function{\sf preimage-game$_{H,\mathcal{A}}$}{$\kappa$}
-            \State{$x \getsrandomly \{0, 1\}^\kappa$}
+            \State{$x \getsrandomly \{0, 1\}^{2\kappa}$}
             \Let{y}{H_\kappa(x)}
             \Let{x'}{\mathcal{A}(y)}
             \State\Return $H_\kappa(x') = y$
