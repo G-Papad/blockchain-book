@@ -397,6 +397,8 @@ these guesses} is correct? We can apply a \emph{union bound}~\cite{ross} to find
   \]
 \end{theorem}
 
+% TODO: Law of total probability
+
 Note that this is just an upper bound and these probabilities may not be exactly
 equal. To see why, consider the simple example of rolling a die $6$ times, hoping
 to get a $6$. For any one roll, the probability of getting a $6$ is $\frac{1}{6}$,
@@ -456,11 +458,20 @@ something negligible keeps it negligible, and taking any constant power of a neg
 keeps it negligible.
 
 \begin{align*}
-  \textsf{negl} \cdot \textsf{negl} &= \textsf{negl}\\
-  \textsf{const} \cdot \textsf{negl} &= \textsf{negl}\\
-  \textsf{poly} \cdot \textsf{negl} &= \textsf{negl}\\
-  \forall k \in \mathbb{N}: \textsf{negl}^k &= \textsf{negl}
+  \textsf{negl} \cdot \negl &= \negl\\
+  \textsf{const} \cdot \negl &= \negl\\
+  \textsf{poly} \cdot \negl &= \negl\\
+  \forall k \in \mathbb{N}: \negl^k &= \negl
 \end{align*}
+
+Functions in the form of $1 - \negl$ are called \emph{overwhelming}:
+
+\begin{definition}[Overwhelming function]\index{Overwhelming function}
+  A function $f(\kappa)$ is \emph{overwhelming} if it is of the form
+  $1 - \negl(\kappa)$ for some negligible function $\negl$.
+\end{definition}
+
+We would like our protocols to be secure with overwhelming probability.
 
 \subsection*{Definitions of Security}
 
