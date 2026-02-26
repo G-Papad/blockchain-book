@@ -237,8 +237,9 @@ This is captured in the following theorem:
 \end{theorem}
 \begin{proof}
   Consider a PPT adversary $\mathcal{A}$ against the preimage game.
-  We will construct an adversary $\mathcal{A}'$ against the 2nd preimage game. The adversary $\mathcal{A}'$ is depicted
-  in Algorithm~\ref{alg.2preimage-preimage} and Figure~\ref{fig.2preimage-preimage}. It is clear that $\mathcal{A}'$ is PPT because $\mathcal{A}$ is PPT.
+  We construct an adversary $\mathcal{A}'$ against the 2nd preimage game. The adversary $\mathcal{A}'$ is depicted
+  in Algorithm~\ref{alg.2preimage-preimage} and Figure~\ref{fig.2preimage-preimage}.
+  As $\mathcal{A}$ is PPT, so is $\mathcal{A}'$.
 
   \import{./}{algorithms/alg.2preimage-preimage}
 
@@ -249,68 +250,51 @@ This is captured in the following theorem:
     \label{fig.2preimage-preimage}
   \end{figure}
 
-  Even though $\mathcal{A}$ could win the preimage game, this only guarantees that $H(x_1) = H(x_2)$.
-  We need one additional property for $\mathcal{A}'$ to win the 2nd preimage game: It must hold that $x_1 \neq x_2$.
-  We will now argue that this is often the case.
+  $\mathcal{A}$ winning the preimage game only guarantees that $H(x_1) = H(x_2)$.
+  For $\mathcal{A}'$ to win the 2nd preimage game, it must also hold that $x_1 \neq x_2$.
+  We will now argue that this is often the case. The intuition is that $\mathcal{A}$ only has
+  access to $y$, therefore the probability of it producing either of multiple preimages of $y$
+  does not depend on which preimage of $y$ we hashed to obtained $y$.
 
-  In order for $x_1 \neq x_2$, it must be the case that the $y$ input to the adversary $\mathcal{A}$ must have more than one preimage. We'll call these $y$ \emph{ambiguous} images of the hash. So let's consider the subspace $X = \{ x \in \{0, 1\}^{2\kappa}: \exists x' \in \{0, 1\}^\kappa: x \neq x' \land H(x') = H(x) \}$ of those inputs with an ambiguous image. By
-  the Pigeonhole Principle, the inputs with unambiguous images must be fewer than $2^\kappa$, so $|X| > 2^{2\kappa} - 2^\kappa = 2^\kappa(2^\kappa - 1)$, which makes it large. We will condition our probabilities on the event that $x_1 \in X$.
-  The probability of this event is $\Pr[x_1 \in X] = \frac{|X|}{2^{2\kappa}} = 1 - 2^{-\kappa}$, which is overwhelming. The complementary event has negligible probability $\Pr[x_1 \notin X] = 2^{-\kappa}$.
+  In order for $x_1 \neq x_2$, the $y$ input to $\mathcal{A}$ must have multiple preimages. We call these $y$ \emph{ambiguous} images. Consider the subspace $X = \{ x \in \{0, 1\}^{2\kappa}: \exists x' \in \{0, 1\}^{2\kappa}: x \neq x' \land H(x') = H(x) \}$ of inputs with an ambiguous image. By
+  the Pigeonhole Principle, the inputs with unambiguous images are fewer than $2^\kappa$, so $|X| > 2^{2\kappa} - 2^\kappa$, which makes it large ($2^{2\kappa}$ is much larger than $2^\kappa$).
+  We will condition our probabilities on the event $F$ that $x_1 \in X$.
+  The complementary event has negligible probability $\Pr[\neg F] = 2^{-\kappa}$.
 
-  Let us examine if $\mathcal{A}$ continues to succeed under this conditioning. For brevity,
-  let us denote the event $\textsf{preimage-game}_\mathcal{A}(\kappa)$ by $E$ and the event
+  For brevity, denote $\textsf{preimage-game}_\mathcal{A}(\kappa)$ by $E$ and
   $\textsf{2nd-preimage-game}_{\mathcal{A}'}(\kappa)$ by $E'$.
 
-  Applying the law of total probability, we have that
-  \begin{align*}
-    \Pr[E] = \Pr[E \mid x_1 \in X] \Pr[x_1 \in X] + \Pr[E \mid x_1 \notin X] \Pr[x_1 \notin X]\,.
-  \end{align*}
+  Applying the law of total probability, we have
+  \begin{align}
+                & \Pr[E] = \Pr[E \mid F] \Pr[F] + \Pr[E \mid \neg F] \Pr[\neg F] \nonumber \\
+    \Rightarrow & \Pr[E \mid F]\Pr[F] = \Pr[E] - \Pr[E \mid \neg F] \Pr[\neg F] \label{eq.2preimage-preimage}
+  \end{align}
 
-  Solving for $\Pr[\textsf{preimage-game}_\mathcal{A}(\kappa) \mid x_1 \in X]$, we get
-  \begin{align*}
-    \Pr[E \mid x_1 \in X] = \frac{\Pr[E] - \Pr[E \mid x_1 \notin X] \Pr[x_1 \notin X]}{\Pr[x_1 \in X]} \geq\\
-    \Pr[E] - \Pr[E \mid x_1 \notin X] \Pr[x_1 \notin X] \geq
-    \Pr[E] - \Pr[x_1 \notin X] =\\
-    \textsf{non-negl}(\kappa) - \textsf{negl}(\kappa) = \textsf{non-negl}(\kappa)\,.
-  \end{align*}
-
-  So the adversary $\mathcal{A}$ still has a non-negligible probability of success under this conditioning.
-
-  Next, let us calculate the probability of success of $\mathcal{A}'$. Since the assumption
-  was that $\mathcal{A}'$ is successful with negligible probability, for the contradiction
-  it suffices to show that $\Pr[E']$ is non-negligible.
-
-  Using the law of total probability, we have that
-  \begin{align*}
-    \Pr[E'] = \Pr[E' \mid x_1 \in X] \Pr[x_1 \in X] + \Pr[E' \mid x_1 \notin X] \Pr[x_1 \notin X] \geq\\
-    \Pr[E' \mid x_1 \in X] \Pr[x_1 \in X]\,.
-  \end{align*}
-
-  Since $\Pr[x_1 \in X]$ is non-negligible, it suffices to show that $\Pr[E' \mid x_1 \in X]$ is non-negligible.
-  Again let us apply the law of total probability on the event of $\mathcal{A}$ succeeding:
-
-  \begin{align*}
-    \Pr[E' \mid x_1 \in X] =\\
-    \Pr[E' \mid E \land x_1 \in X] \Pr[E \mid x_1 \in X]
-    + \Pr[E' \mid \neg E \land x_1 \in X] \Pr[\neg E \mid x_1 \in X] \geq\\
-    \Pr[E' \mid E \land x_1 \in X] \Pr[E \mid x_1 \in X]
-  \end{align*}
-
-  Since $\Pr[E \mid x_1 \in X]$ is non-negligible, it suffices to show that $\Pr[E' \mid E \land x_1 \in X]$ is non-negligible. If $E$ is successful, for $E'$ to be successful, it suffices that
-  $x_1 \neq x_2$. Since the adversary $\mathcal{A}$ is only given $y$, the conditioning on
-  $x_1 \in X$ retains the uniform distribution of $x_2$. Since for each $y \in H(X)$ there
+  Now consider the event $E'$ conditioned on $E \land F$. If $E$ is successful, for $E'$ to be successful, it suffices that
+  $x_1 \neq x_2$. Since the adversary $\mathcal{A}$ is only given $y$,
+  each preimage of $y$ appears with the same probability even under the conditioning on $E$.
+  Since for each $y \in H(X)$ there
   are at least two $x \in X$ that hash to $y$, the probability of $x_1 \neq x_2$ is at
   least $\frac{1}{2}$. Therefore
-  $\Pr[E' \mid E \land x_1 \in X] = \Pr[x_1 \neq x_2 \mid E \land x_1 \in X] \geq \frac{1}{2}$,
-  which is non-negligible as desired.
-\end{proof}
+  $\Pr[E' \mid E \land F] = \Pr[x_1 \neq x_2 \mid E \land F] \geq \frac{1}{2}$.
 
-% TODO: write this proof in the forward direction
-% This may allow us to add this comment:
-% Note that in the above proof, the probabilities of success of $\mathcal{A}'$
-% and $\mathcal{A}$ are related by an inequality. This is because $\mathcal{A}'$
-% may also succeed in case we land to the right of the dashed line, but we are not
-% accounting for this probability in our counting.
+  Let us calculate the probability of success of $\mathcal{A}'$. Using the law of total probability,
+  we have
+  \begin{align*}
+    \Pr[E'] = \Pr[E' \mid F] \Pr[F] + \Pr[E' \mid \neg F] \Pr[\neg F] \geq
+    \Pr[E' \mid F] \Pr[F] =\\
+    \left(\Pr[E' \mid E \land F] \Pr[E \mid F]
+    + \Pr[E' \mid \neg E \land F] \Pr[\neg E \mid F]\right) \Pr[F] \geq\\
+    \Pr[E' \mid E \land F] \Pr[E \mid F] \Pr[F] \geq
+    \frac{1}{2} \Pr[E \mid F] \Pr[F] = \\
+    \frac{1}{2} \left(\Pr[E] - \Pr[E \mid \neg F] \Pr[\neg F]\right)
+  \end{align*}
+
+  The last equality follows from \Cref{eq.2preimage-preimage}.
+  Solving for $\Pr[E]$ we get $\Pr[E] \leq 2 \Pr[E'] + \Pr[E \mid \neg F] \Pr[\neg F]$.
+  Since $\Pr[E']$ is negligible by assumption, and we also proved that $\Pr[\neg F]$ is negligible,
+  therefore $\Pr[E]$ is negligible as desired.
+\end{proof}
 
 \subsection*{Hash Security}
 
