@@ -75,10 +75,10 @@ for sufficiently large values of $\kappa$. The security definition follows from 
 
 \begin{definition}[Collision Resistance]
   A hash function $H: \{0, 1\}^* \longrightarrow \{0, 1\}^\kappa$ is \emph{collision resistant}
-  if for all PPT adversaries $\mathcal{A}$
-
+  if
   \[
-    \Pr[\textsf{collision-game}_{H,\mathcal{A}}(\kappa) = 1] \leq \negl(\kappa)
+    \forall PPT \mathcal{A}:
+    \Pr[\textsf{collision-game}_{H,\mathcal{A}}(\kappa) = 1] \text{ is negligible}\,.
   \]
 \end{definition}
 
@@ -160,10 +160,10 @@ as $x$. Preimage resistance is then defined as follows:
 
 \begin{definition}[Preimage Resistance]
   A hash function $H: \{0, 1\}^* \longrightarrow \{0, 1\}^\kappa$ is \emph{preimage resistant}
-  if for all PPT adversaries $\mathcal{A}$
-
+  if
   \[
-    \Pr[\textsf{preimage-game}_{H,\mathcal{A}}(\kappa) = 1] \leq \negl(\kappa)
+    \forall PPT \mathcal{A}:
+    \Pr[\textsf{preimage-game}_{H,\mathcal{A}}(\kappa) = 1] \text{ is negligible}\,.
   \]
 \end{definition}
 
@@ -181,10 +181,10 @@ Second preimage resistance is then defined as follows:
 
 \begin{definition}[Second Preimage Resistance]
   A hash function $H: \{0, 1\}^* \longrightarrow \{0, 1\}^\kappa$ is \emph{second preimage resistant}
-  if for all PPT adversaries $\mathcal{A}$
-
+  if
   \[
-    \Pr[\textsf{2nd-preimage-game}_{H,\mathcal{A}}(\kappa) = 1] \leq \negl(\kappa)
+    \forall PPT \mathcal{A}:
+    \Pr[\textsf{2nd-preimage-game}_{H,\mathcal{A}}(\kappa) = 1] \text{ is negligible}\,.
   \]
 \end{definition}
 
@@ -319,11 +319,10 @@ or simply \emph{secure}. Since collision adversaries are the weakest adversaries
 simply require that our hash functions are collision resistant.
 
 \begin{definition}[Secure Hash Function]
-  A hash function $H: \{0, 1\}^* \longrightarrow \{0, 1\}^\kappa$ is \emph{secure} if there is a negligible function \emph{negl} such that
-
+  A hash function $H: \{0, 1\}^* \longrightarrow \{0, 1\}^\kappa$ is \emph{secure} if
   \begin{gather*}
     \forall PPT \mathcal{A}:
-      \Pr[\textsf{collision-game}_{H,\mathcal{A}}(\kappa) = 1] \leq \textsf{negl}
+    \Pr[\textsf{collision-game}_{H,\mathcal{A}}(\kappa) = 1] \text{ is negligible}\,.
   \end{gather*}
 \end{definition}
 
@@ -397,17 +396,17 @@ Given a private key, it is \emph{easy} to get the respective public key. Given a
 key, it is \emph{hard} to get the respective private key, even though there is a unique
 such key. This is essential. If it were easy to get the private key from a public key,
 anyone who knew your public key could impersonate you. We will denote the public key
-\glsxtrnewsymbol[description={public key}]{pubkey}{$pk$}\glsadd{pubkey}
+\glsxtrnewsymbol[description={public key}]{pubkey}{$pk$}\glsadd{pubkey}%
 $pk$
 and the secret (or private) key
-\glsxtrnewsymbol[description={secret key}]{seckey}{$sk$}\glsadd{seckey}
+\glsxtrnewsymbol[description={secret key}]{seckey}{$sk$}\glsadd{seckey}%
 $sk$.
 
 \subsection*{Unforgeability}
 
-A cryptographic signature is created using a particular private key $sk$ and is
+A cryptographic \emph{signature} is created using a particular private key $sk$ and is
 denoted
-\glsxtrnewsymbol[description={signature}]{signature}{$\sigma$}\glsadd{signature}
+\glsxtrnewsymbol[description={signature}]{signature}{$\sigma$}\glsadd{signature}%
 $\sigma$.
 It is associated with a particular message $m$. This means that
 the person who holds the private key has authorized this message $m$. The message
@@ -433,18 +432,18 @@ on hard computational problems and formal cryptographic claims.
 
 Before we define our security game, let us precisely state how a signature protocol
 works. Initially, Alice generates her key pair $(pk, sk)$ by invoking a special algorithm
-\glsxtrnewsymbol[description={generation function}]{gen}{$\Gen$}\glsadd{gen}
+\glsxtrnewsymbol[description={generation function}]{gen}{$\Gen$}\glsadd{gen}%
 $\Gen(1^\kappa)$. The public key and the secret key are both simple strings, $\kappa$
 bits long (in practice typically $256$ bits each).
 She keeps $sk$ secret and publishes $pk$ by
 sending it to her friends. When the time comes for Alice to write a message $m$
 that she wishes to sign, she uses her private key $sk$ to invoke the function
-\glsxtrnewsymbol[description={signature function}]{sig}{$\Sig$}\glsadd{sig}
+\glsxtrnewsymbol[description={signature function}]{sig}{$\Sig$}\glsadd{sig}%
 $\Sig(sk, m)$
 to obtain a signature $\sigma$. She sends the message $m$ together
 with the signature $\sigma$ to Bob. Bob already holds the public key $pk$ of Alice.
 He uses the public key to invoke the function
-\glsxtrnewsymbol[description={signature verification}]{ver}{$\Ver$}\glsadd{ver}
+\glsxtrnewsymbol[description={signature verification}]{ver}{$\Ver$}\glsadd{ver}%
 $\Ver(pk, m, \sigma)$,
 which returns
 $\true$ if the signature was genuinely created by Alice, or $\false$ otherwise.
@@ -455,7 +454,7 @@ If both the sender and the verifier are honest, the signature scheme should alwa
 work. This is what constitutes a \emph{correct} signature scheme.
 
 \begin{definition}[Signature Correctness]
-  Consider a signature scheme $(\Gen, \Sig, \Ver)$. The scheme is \emph{correct} if
+  A signature scheme $(\Gen, \Sig, \Ver)$ is \emph{correct} if
   for any key pair $(pk, sk)$ generated by invoking $Gen$, and
   for all messages $m$, it holds that $\Ver(pk, m, Sig(sk, m)) = \true$.
 \end{definition}
@@ -495,8 +494,8 @@ A closure function $\mathcal{O}$ is defined within the challenger. When invoked
 with a message $m$, this function gives out a signature $\sigma$ to the message
 $m$ using the secret key $sk$, but without revealing the secret key. The closure
 also records the requested message in the set $M$.
-When the adversary is invoked, she is given \emph{oracle access} to call the
-function $\mathcal{O}$. This is like a callback, and is denoted using the
+When the adversary is invoked, she is given \emph{oracle access}, or black box access,
+to call the function $\mathcal{O}$. This is like a callback, and is denoted using the
 exponent notation. It means that $\mathcal{A}$ can call $\mathcal{O}$, but
 cannot look at its code. Critically, $\mathcal{A}$ cannot see the value $sk$.
 The adversary can make multiple \emph{queries} to the oracle to obtain many
@@ -513,12 +512,10 @@ identical security definitions, try writing out the definition before looking
 at it.
 
 \begin{definition}[Secure Signature Schemes]
-  A signature scheme $(\Gen, \Sig, \Ver)$ is called \emph{secure} if there
-  exists a negligible function \emph{negl} such that
-
+  A signature scheme $(\Gen, \Sig, \Ver)$ is called \emph{secure} if
   \begin{align*}
     \forall PPT \mathcal{A}:
-    \Pr[\textsf{existential-forgery}_{\Gen, \Sig, \Ver, \mathcal{A}}(\kappa) = 1] < \negl(\kappa)
+    \Pr[\textsf{existential-forgery}_{\Gen, \Sig, \Ver, \mathcal{A}}(\kappa) = 1] \text{ is negligible}\,.
   \end{align*}
 \end{definition}
 
@@ -614,23 +611,12 @@ else. Lastly, Alice's payment can be verified by invoking \emph{Ver} using $pk$ 
   \item Construct a correct but insecure signature scheme. Write the full
         implementation of your signature scheme in pseudocode. Prove its
         correctness and insecurity.
-  \item I was using the AI program ChatGPT to save some time while preparing the
-        lecture notes for this course. As I was working on them, ChatGPT
-        autocompleted my notes with the following text:
+  \item Prove or disprove the following claim:
         \begin{quote}
-          It seems that all three properties, collision resistance, preimage
-          resistance, and second preimage resistance, are desirable. However,
-          it is not possible to have all three at the same time. In fact, the
-          following theorem shows that it is impossible to have collision
-          resistance and second preimage resistance at the same time.
-
-          \begin{theorem}[Krawczyk's Theorem]
-            Let $H: \{0, 1\}^* \longrightarrow \{0, 1\}^\kappa$ be a hash
-            function. Then, $H$ is collision resistant if and only if it is not
-            second preimage resistant.
-          \end{theorem}
+          Let $H: \{0, 1\}^* \longrightarrow \{0, 1\}^\kappa$ be a hash
+          function. Then, $H$ is collision resistant if and only if it is not
+          second preimage resistant.
         \end{quote}
-        Prove or disprove the above theorem.
 \end{problems}
 
 \section*{Further Reading}
@@ -643,12 +629,11 @@ for \emph{existential unforgeability}. In the same book, you can find constructi
 schemes using various methods, including some details on elliptic curves.
 Other good books that review these topics and talk about \emph{how} to build a hash function or
 a signature scheme are
-\emph{Introduction to Modern Cryptography}~\cite{katz},
-\emph{A Graduate Course in Applied Cryptography }~\cite{cryptobook},
-or
+\emph{A Graduate Course in Applied Cryptography}~\cite{cryptobook},
+and
 \emph{Foundations of Cryptography}~\cite{foundations1,foundations2}.
 
-In our examples, we considered a $(2\kappa+1)$-bit message space as an illustrative example.
+In our examples, we considered a $2\kappa$-bit message space as an illustrative example.
 For a complete and nuanced cryptographic treatment of arbitrary-sized message spaces,
 which is beyond the scope of this book, refer to the seminal paper by
 Rogaway and Shrimpton~\cite{rogaway2004cryptographic} that formalized and proved these notions.
