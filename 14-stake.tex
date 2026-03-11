@@ -183,27 +183,31 @@ proposers. We prefer the case where there is exactly one honest proposer per slo
 our terminology from \Cref{chapter.chain}, we name a \emph{convergence opportunity}.
 When there are multiple
 honest proposers per slot, we can have fan-out situations. These will eventually be resolved for the
-same reason they are resolved in proof-of-work.
+same reason they are resolved in proof-of-work: At some point, there will be a convergence
+opportunity which will not be matched by an adversarial block. Naturally, this requires that
+the majority of stake is honest.
 
 % TODO: figures about past and future
-During validation, we demanded that slots in blocks are not in the future. This requires the
+During validation, we demand that slots in blocks are not in the future. This requires the
 honest party to keep a local clock and compare this local clock against the slot numbers in the
 blocks they receive. If a block has a slot number in the future, it is rejected. If this check
-was missing, the adversary could check a massive number of future slots \emph{in advance} and leverage
+was missing, the adversary could test the proof-of-stake inequality for a massive number
+of future slots \emph{in advance} and leverage
 all these tickets to create a chain \emph{today}, whereas the honest parties only test the
 current slot.
 This highlights a fundamental difference between
 proof-of-work and proof-of-stake: In proof-of-work, the parties cannot predict future successes
 until the time of the success actually occurs, exactly because the expenditure of computational
-power takes time. On the other hand, in proof-of-stake, a party can see into the future and
-know in which slots she will be a proposer.
+power takes time. On the other hand, in proof-of-stake, a party can peek into the future and
+know in which slots she will be a proposer. This is the reason why we need the check that
+slots of valid blocks are only in the past.
 
-Dually, we also demanded that the slots of the blocks in a chain are increasing.
+Dually, we also demand that the slots of the blocks in a chain are increasing.
 This prevents the adversary from using old blocks in the future. If the check was missing, the following
 concrete attack would be possible: The adversary sleeps for a long period of time and allows the honest parties
 to produce a chain $\chain$. At some point in time, the adversary wakes up and uses all of her past
 tickets on top of $\chain[{:}{-k}]$, breaking safety. In proof-of-work, we avoided such issues
-by including $s$ in the ticketing mechanism, ensuring the proof-of-work is invalidated whenever the
+by including the previd $s$ in the ticketing mechanism, ensuring the proof-of-work is invalidated whenever the
 $s$ contained within is retroactively changed.
 
 Contrary to proof-of-work, in proof-of-stake,
@@ -247,14 +251,47 @@ $10$.
   \label{fig.pos-example}
 \end{figure}
 
+\section{Aggregation Independence}
+
+Let us now remove the restriction that each party holds exactly one unit of money,
+and allow different parties to hold different monetary amounts. The stake distribution
+will now be a map from public keys to non-negative integer amounts. The honest majority
+assumption needs to be altered to weight keys by the amount of money they hold:
+
+\begin{definition}[Honest Stake Majority Assumption]
+  For a given \emph{stake distribution} $\SD\colon \PKI \longrightarrow \mathbb{N}$
+  of some public key infrastructure $\PKI$ among which $\Hon \subseteq \PKI$ are honest, we say
+  that the \emph{honest stake majority assumption} holds if
+  \[
+    \sum_{\pk \in \Hon} \SD[\pk] > \sum_{\pk \in \PKI \setminus \Hon} \SD[\pk]\,.
+  \]
+\end{definition}
+
+Our protocol should reflect this \emph{weighted} honest majority assumption by assigning
+a higher probability of success to parties with more stake. Simply put, parties with
+a higher stake should become proposers more often. We control this probability by altering
+the target, so we will now make the target potentially different for each party, and
+dependent on their stake. We define a function $\phi$ that, given a stake, returns
+the target.
+
+% TODO: define notation:
+%  a) ranges [i:j], [i], [-j], [:-j], ...
+%  b) the set [n]
+%  c) empty string: $\epsilon$
+%  d) Chernoff error parameter: $\varepsilon$
+
+$\epsilon \varepsilon$
+
+\begin{definition}
+  \[
+  \phi\colon \mathbb{N} \longrightarrow [2^\kappa]
+  \]
+\end{definition}
+
+% TODO: broken example... then go to aggregation independence
+
 \input{algorithms/alg.pos-round}
 \input{algorithms/alg.pos-valid}
-
-- Slashing
-
-% Block = (H(r \concat \pk), (s \concat x \concat \sigma))
-% TODO: later add the slot
-% TODO: observe that multiple (or no) leaders can be elected
 
 {\color{red}
 \begin{itemize}
@@ -263,7 +300,6 @@ $10$.
 \item Pseudorandomness: Getting more randomness from little randomness
 \item Epoch randomness
 \item Slot leaders
-\item The Ouroboros protocol
 \item k+1 blocks in any continuous 2k slots
 \item Verifiable random functions
 \item The proof-of-stake inequality
@@ -277,8 +313,8 @@ $10$.
 
 \section*{Further Reading}
 
-The first provably secure longest-chain proof-of-stake system is Ouroboros~\cite{ouroboros}.
-This protocol is used in practical systems such as Cardano and Polkadot. The first
+The first provably secure longest-chain proof-of-stake protocol is Ouroboros~\cite{ouroboros}.
+This is used in practical systems such as Cardano and Polkadot. The first
 construction that uses the proof-of-stake inequality in the way we defined in this chapter
 appears in the Sleepy Model of Consensus~\cite{sleepy-model}. The proper definitions of
 VRFs for use in the proof-of-stake inequality appear in Ouroboros Praos~\cite{praos},
