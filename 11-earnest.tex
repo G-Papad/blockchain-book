@@ -313,14 +313,24 @@ Equipped with this new rigorous definition of the environment, our assumptions a
 % \subsection{Common Prefix (\texorpdfstring{$\kappa$}{Lg})}
 % $\forall$ honest parties $P_1, P_2$ adopting chains $C_1, C_2$ at rounds $r_1 \leq r_2$ respectively, Common Prefix property  $C_1[:-\kappa] \leq C_2$ holds.
 
-\begin{enumerate}
-    \item \textbf{Common Prefix (\texorpdfstring{$\kappa$}{Lg}).}
-    $\forall$ honest parties $P_1, P_2$ adopting chains $C_1, C_2$ at any rounds $r_1 \leq r_2$ respectively, Common Prefix property  $C_1[:-\kappa] \leq C_2$ holds.
-    \item \textbf{Chain Quality (\texorpdfstring{$\mu, \ell$}{Lg}).}
-    $\forall$ honest party $P$ with adopted chain $C$,  $\forall i$ any chunk $C[i: i+\ell]$ of length $\ell > 0$ has a ratio of honest blocks $\mu$.
-    \item \textbf{Chain Growth (\texorpdfstring{$\tau, s$}{Lg}).}
-    $\forall$ honest parties $P$ and $\forall r_1, r_2$ with adopted chain $C_1$ at round $r_1$ and adopted chain $C_2$ at round $r_2 \geq r_1 + s$, it holds that $|C_2| \geq |C_1| + \tau s$.
-\end{enumerate}
+\begin{definition}[Common Prefix]\index{Common Prefix}
+  A system is said to satisfy \emph{Common Prefix} with parameter $k \in \mathbb{N}$ if
+  for all honest parties $P_1, P_2$ and for all times $r_1 \leq r_2$, the chains adopted
+  by the honest parties satisfy the property that
+  \[
+    \chain^{P_1}_{r_1}[{:}{-k}] \preceq \chain^{P_2}_{r_2}\,.
+  \]
+\end{definition}
+
+\begin{definition}[Chain Quality]
+  A system is said to satisfy \emph{Chain Quality} with parameters $\ell \in \mathbb{N}, \mu \in [0, 1]$ if for all honest parties $P$ and all times $r$, for all $i, j \in \mathbb{N}$ such that $j - i \geq \ell$, we have
+  \[\frac{|\mathcal{H}(C^P_r[{i}{:}{j}])|}{j - i} \geq \mu\,.\]
+\end{definition}
+
+\begin{definition}[Chain Growth]
+  A system is said to satisfy \emph{Chain Growth} with parameters $s \in \mathbb{N}, \tau \in \mathbb{R}^+$ if for all honest parties $P$ and all times $r_1 \leq r_2$ such that $r_2 - r_1 \geq s$, we have
+  \[|C^P_{r_2}| - |C^P_{r_1}| \geq \tau (r_2 - r_1)\,.\]
+\end{definition}
 
 % \subsection{Chain Growth (\texorpdfstring{$\tau, s$}{Lg})}
 % $\forall$ honest parties $P$ and $\forall r_1, r_2$ with adopted chain $C_1$ at round $r_1$ and adopted chain $C_2$ at round $r_2 \geq r_1 + s$, Chain Growth condition $|C_2| \geq |C_1| + \tau s$ holds.
