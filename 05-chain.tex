@@ -34,7 +34,7 @@ $n \in \mathbb{N}$
 and the adversary controls
 \glsxtrnewsymbol[description={adversarial parties}]{adversarial parties}{$t$}\glsadd{adversarial parties}
 $t \in \mathbb{N}$
-of them. Here, we are assuming that all computers have equal processing power, but if there is some computer on the network that has more processing power, we can just think about that powerful computer as a collection of smaller, less powerful computers, each of which has $q$ computational power. The model still works out. We will call each of these computers a
+of them. Here, we are assuming that all computers have equal processing power, but if there is some computer on the network that has more processing power, we can just think about that powerful computer as a collection of smaller, less powerful computers, each of which has $q$ computational power. We will call each of these computers a
 \emph{party}\index{Party}.
 Each mining party will roughly correspond to a node on the network, but in practice these are not necessarily the same: A single network node can correspond to multiple parties if it is a powerful computer. On the other hand, because our system is permissionless, a party may spawn multiple nodes that all share the same computational power. Additionally, even though we are saying that the adversary is in control of $t$ adversarial parties, we are still considering the situation where the adversary is a ``puppet master'' who controls every adversarial party of the network by a central ``master plan'' $\mathcal{A}$. We say that such a party controlled by the adversary is \emph{adversarial}, \emph{corrupt}, or \emph{malicious}, and we will use these terms interchangably.
 
@@ -48,7 +48,7 @@ time is $\frac{1}{pnq} = \frac{2^\kappa}{Tnq}$. If we want this value to be abov
 
 In a nutshell, the more computational power there is on the network, the larger we must make the difficulty.
 Also, the larger the network delay, the larger we must make the difficulty.
-We will use $f$ to denote the honest block production rate (expected blocks per unit of time),
+We will use $f$ to denote the honest block production rate (expected honest blocks per unit of time),
 and $\eta = \frac{1}{f}$ the expected time between two blocks being generated.
 For now, we'll estimate that $f \simeq (n - t)qp$, but we will give a more
 formal definition for $f$ in Chapter~\ref{chapter.earnest1}.
@@ -83,10 +83,10 @@ tip has depth $2$ and so on.
 It will also be useful to speak about \emph{chunks} of a chain, continuous portions
 of the chain. We'll denote by $\chain[i{:}j]$ the portion of the chain starting at block
 with index $i$ (inclusive) and ending at block with index $j$ (exclusive). For example,
-$(B_0, B_1, B_2)[0:2] = (B_0, B_1)$. These $i$ and $j$ can also be negative, again meaning
+$(B_0, B_1, B_2)[0{:}2] = (B_0, B_1)$. These $i$ and $j$ can also be negative, again meaning
 indexing from the end. Omitting $i$ means starting from the beginning, while
 omitting $j$ means going until the end of the chain. For example
-$(B_0, B_1, B_2, B_3, B_4, B_5)[-2:] = (B_4, B_5)$.
+$(B_0, B_1, B_2, B_3, B_4, B_5)[-2{:}] = (B_4, B_5)$.
 
 We have not yet specified how to actually verify a block, and what are the conditions for
 accepting a block. How exactly do we determine if a block is \emph{fresh} or \emph{unfresh}? Let
@@ -635,7 +635,7 @@ become confirmed in its stead.
   for honest parties, but is very beneficial for solving proof-of-work
   to the adversary. Calculate the probability that the adversary obtains a
   block with your hash function $G$ in one query, and the probability that
-  an honest party obtains a block with your hash function in one query.
+  an honest party obtains a block with your hash function in one query.\label{problem.small-hash}
 
   \item In the proof-of-work inequality, we wrote $H(B) \leq T$.
   How is the protocol affected if we instead use the strict inequality $H(B) < T$?
