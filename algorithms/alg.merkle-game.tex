@@ -1,0 +1,12 @@
+\begin{figure}[t]
+\begin{algorithm}[H]
+    \caption{\label{alg.vector-game} The vector commitment game.}
+    \begin{algorithmic}[1]
+        \Function{\sf vc-game$_{\textrm{VC},\mathcal{A}}$}{$\kappa$}
+          \Let{h, \pi_1, \pi_2, d_1, d_2, j}{\mathcal{A}(1^\kappa)}
+          \State\Return $\textrm{VC}.\textsf{Verify}(h, d_1, j, \pi_1) \land \textrm{VC}.\textsf{Verify}(h, d_2, j, \pi_2) \land d_1 \neq d_2$
+        \EndFunction
+        \vskip8pt
+    \end{algorithmic}
+\end{algorithm}
+\end{figure}
