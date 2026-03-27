@@ -13,7 +13,7 @@ applied, we arrive at the final state $\st_{|L|}$.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.7 \columnwidth,keepaspectratio]{figures/tx-state-transition.pdf}
+  \includegraphics[width=0.7 \columnwidth,keepaspectratio]{09-accounts/figures/tx-state-transition.pdf}
   \caption{Transitioning state by applying transactions.}
   \label{fig.state-transition}
 \end{figure}
@@ -50,7 +50,7 @@ write out the $\delta$ function explicitly, as illustrated in \Cref{alg.utxo}.
 We call this transition function $\delta_{\textsf{UTXO}}$. This makes precise the informal
 validation procedure described in \Cref{sec.transaction.validation}.
 
-\import{./}{algorithms/alg.utxo}
+\import{./09-accounts/}{algorithms/alg.utxo}
 
 Our function takes as input a state $\st$ and a transaction $\tx$. The state
 $\st$ represents the UTXO set with a mapping from \emph{outpoints} to
@@ -185,7 +185,7 @@ considered valid again.
 
 The final transition function $\delta_\textsf{accounts}$ is shown in \Cref{alg.accounts}.
 
-\import{./}{algorithms/alg.accounts}
+\import{./09-accounts/}{algorithms/alg.accounts}
 
 An example practical system that uses the UTXO model is Bitcoin, whereas Ethereum uses the
 accounts model.

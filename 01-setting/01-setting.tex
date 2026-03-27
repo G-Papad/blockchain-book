@@ -358,13 +358,13 @@ is illustrated diagramatically in Figure~\ref{fig.game}.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.7 \columnwidth,keepaspectratio]{figures/game-based-security.pdf}
+    \includegraphics[width=0.7 \columnwidth,keepaspectratio]{01-setting/figures/game-based-security.pdf}
     \caption{A game-based security definition shown diagramatically. The challenger invokes both
     the honest party and the adversary before deciding whether the adversary was successful.}
     \label{fig.game}
 \end{figure}
 
-\import{./}{algorithms/alg.game.tex}
+\import{./01-setting/}{algorithms/alg.game.tex}
 
 \subsection*{Negligibility}
 
@@ -549,7 +549,7 @@ but a successful adversary will require superpolynomial time to successfully bre
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.3 \columnwidth,keepaspectratio]{figures/p-vs-np.pdf}
+    \includegraphics[width=0.3 \columnwidth,keepaspectratio]{01-setting/figures/p-vs-np.pdf}
     \caption{In a secure protocol, a successful honest party needs polynomial time,
     while a successful adversary needs superpolynomial time.}
     \label{fig.p-vs-np}
@@ -603,7 +603,7 @@ this contradicts the assumption that $\Pi^*$ was secure, completing the proof. $
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.4 \columnwidth,keepaspectratio]{figures/reduction.pdf}
+    \includegraphics[width=0.4 \columnwidth,keepaspectratio]{01-setting/figures/reduction.pdf}
     \caption{A computational reduction between two adversaries. Given an adversary
     $\mathcal{A}$ against protocol $\Pi$, we construct an adversary $\mathcal{A}^*$
     against a protocol $\Pi^*$.}
@@ -642,7 +642,7 @@ as clients and as servers of requests.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5 \columnwidth,keepaspectratio]{figures/peer-to-peer-network.pdf}
+    \includegraphics[width=0.5 \columnwidth,keepaspectratio]{01-setting/figures/peer-to-peer-network.pdf}
     \label{fig.network}
     \caption{The peer-to-peer network. Nodes are shown as circles and connections as lines.
     The honest nodes are shown in blue, while the adversarial nodes are shown in black.}
@@ -670,7 +670,7 @@ isolated from the rest of the network, as illustrated in Figure~\ref{fig.eclipsi
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5 \columnwidth,keepaspectratio]{figures/eclipsed-peer-to-peer-network.pdf}
+    \includegraphics[width=0.5 \columnwidth,keepaspectratio]{01-setting/figures/eclipsed-peer-to-peer-network.pdf}
     \caption{An eclipsed peer-to-peer network. Even though every honest party has an honest connection,
     the network is partitioned into two disconnected components by the adversary.}
     \label{fig.eclipsing}
@@ -685,7 +685,7 @@ hope to be able to deduce who owns how much money in their respective counterpar
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5 \columnwidth,keepaspectratio]{figures/sybil-attack.pdf}
+    \includegraphics[width=0.5 \columnwidth,keepaspectratio]{01-setting/figures/sybil-attack.pdf}
     \caption{A Sybil attacked peer-to-peer network. The non-eclipsing assumption is not violated.}
     \label{fig.sybil}
 \end{figure}

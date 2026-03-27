@@ -26,7 +26,7 @@ an unusual way to illustrate things, but it will soon become clear why we are ad
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.35 \columnwidth,keepaspectratio]{figures/utxo-transaction.pdf}
+    \includegraphics[width=0.35 \columnwidth,keepaspectratio]{03-utxo/figures/utxo-transaction.pdf}
     \caption{A transaction paying $1$ unit of money from \emph{Alice} to \emph{Bob}.}
     \label{fig.utxo-transaction}
 \end{figure}
@@ -37,7 +37,7 @@ as illustrated in Figure~\ref{fig.utxo-transaction-chain}.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.55 \columnwidth,keepaspectratio]{figures/utxo-transaction-chain.pdf}
+    \includegraphics[width=0.55 \columnwidth,keepaspectratio]{03-utxo/figures/utxo-transaction-chain.pdf}
     \caption{\emph{Alice} pays $1$ unit of money to \emph{Bob}. She received this money from \emph{Charlie}.}
     \label{fig.utxo-transaction-chain}
 \end{figure}
@@ -60,7 +60,7 @@ even before any transaction takes place.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.35 \columnwidth,keepaspectratio]{figures/utxo-transaction-keys.pdf}
+    \includegraphics[width=0.35 \columnwidth,keepaspectratio]{03-utxo/figures/utxo-transaction-keys.pdf}
     \caption{A transaction pays from one public key to another. It does not contain real names
              or other identifying information.}
     \label{fig.utxo-transaction-keys}
@@ -79,7 +79,7 @@ transaction consumes one input and produces two outputs.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.35 \columnwidth,keepaspectratio]{figures/utxo-multiple-outputs.pdf}
+    \includegraphics[width=0.35 \columnwidth,keepaspectratio]{03-utxo/figures/utxo-multiple-outputs.pdf}
     \caption{Alice uses her salary, the incoming edge, in a single transaction to pay for
              both her rent and a book in two different outgoing edges.}
     \label{fig.utxo-multiple-outputs}
@@ -98,7 +98,7 @@ illustrated in Figure~\ref{fig.utxo-change}.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.35 \columnwidth,keepaspectratio]{figures/utxo-change.pdf}
+    \includegraphics[width=0.35 \columnwidth,keepaspectratio]{03-utxo/figures/utxo-change.pdf}
     \caption{Alice uses her salary, the incoming edge, in a single transaction to pay for
              a book (top output edge). She uses the rest of her money to pay the
              \emph{change} back to herself (bottom output edge).}
@@ -118,7 +118,7 @@ graph.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.75 \columnwidth,keepaspectratio]{figures/utxo-change-chain.pdf}
+    \includegraphics[width=0.75 \columnwidth,keepaspectratio]{03-utxo/figures/utxo-change-chain.pdf}
     \caption{Alice uses her salary, the left-most edge, in a series of transactions,
              always giving change back to herself. The bottom-right edge is her remaining salary.}
     \label{fig.utxo-change-chain}
@@ -134,7 +134,7 @@ two outputs and produces one new output.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.35 \columnwidth,keepaspectratio]{figures/utxo-multiple-inputs.pdf}
+    \includegraphics[width=0.35 \columnwidth,keepaspectratio]{03-utxo/figures/utxo-multiple-inputs.pdf}
     \caption{Alice combines two of her salaries (left, incoming edges) to pay for her
              house (right, outgoing edge).}
     \label{fig.utxo-multiple-inputs}
@@ -191,7 +191,7 @@ incoming edge to a transaction, although this will typically be implicit.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.65 \columnwidth,keepaspectratio]{figures/utxo-outpoint.pdf}
+    \includegraphics[width=0.65 \columnwidth,keepaspectratio]{03-utxo/figures/utxo-outpoint.pdf}
     \caption{The transaction number $19$ has a single input that spends the output number $1$ (to Alice)
              of transaction number $12$.
              The output number $0$ of transaction number $12$ (to Charlie) is still unspent.
@@ -234,7 +234,7 @@ to the transaction ledger while maintaining consistency.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.65 \columnwidth,keepaspectratio]{figures/utxo-tx-graph.pdf}
+    \includegraphics[width=0.65 \columnwidth,keepaspectratio]{03-utxo/figures/utxo-tx-graph.pdf}
     \caption{A transaction graph with $3$ coinbase and $10$ non-coinbase transactions.
              Coinbase transactions are shaded blue.
              There are $23$ outputs, of which $6$ belong to the UTXO set.
@@ -268,7 +268,7 @@ $3$ units.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.65 \columnwidth,keepaspectratio]{figures/utxo-sig.pdf}
+  \includegraphics[width=0.65 \columnwidth,keepaspectratio]{03-utxo/figures/utxo-sig.pdf}
   \caption{Alice creates a new transaction, transaction $19$, by which she pays Bob
            $1$ unit
            and Charlie $2$ units.
@@ -293,7 +293,7 @@ together with the transaction and accompanies it whenever it is broadcast on the
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.65 \columnwidth,keepaspectratio]{figures/utxo-sig-multi.pdf}
+    \includegraphics[width=0.65 \columnwidth,keepaspectratio]{03-utxo/figures/utxo-sig-multi.pdf}
     \caption{Alice creates a new transaction, transaction $19$, by which she pays Bob
              $8$ units
              and Charlie $2$ units.
@@ -571,7 +571,7 @@ This can lead to race conditions, which we tackle in the next chapter.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.7 \linewidth]{figures/utxo-tx-graph-2.pdf}
+  \includegraphics[width=0.7 \linewidth]{03-utxo/figures/utxo-tx-graph-2.pdf}
   \caption{The transaction graph of \Cref{problem.utxo-graph-2}.}
   \label{fig.utxo-graph-2}
 \end{figure}

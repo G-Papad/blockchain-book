@@ -51,7 +51,7 @@ up all of the possible $2^\kappa$ outputs. When we then evaluate the hash functi
 the input $2^\kappa$, we will certainly find a collision. This process is shown in
 Algorithm~\ref{alg.hash-collision}.
 
-\import{./}{algorithms/alg.hash-collision}
+\import{./02-primitives/}{algorithms/alg.hash-collision}
 
 Of course, as this function has to run through
 $2^{2\kappa}$ combinations, its running time is exponential.
@@ -60,7 +60,7 @@ Instead, we will require that \emph{finding} such collisions is \emph{computatio
 difficult. We can define this in the form of the collision finding cryptographic game,
 illustrated in Algorithm~\ref{alg.collision-game}.\index{Collision Resistance}
 
-\import{./}{algorithms/alg.collision-game}
+\import{./02-primitives/}{algorithms/alg.collision-game}
 
 In this game, we ask the adversary to produce two different inputs $x_1$ and $x_2$
 that have the same hash. Note that the hash function $H$ is different
@@ -123,7 +123,7 @@ illustrated in Figure~\ref{fig.gossiping-via-hashing}:
 
 \begin{figure}
     \centering
-    \includegraphics[width=\columnwidth,keepaspectratio]{figures/gossiping-via-hashing.pdf}
+    \includegraphics[width=\columnwidth,keepaspectratio]{02-primitives/figures/gossiping-via-hashing.pdf}
     \caption{Gossiping via hashing. The hash function $H$ is used to give content-addressible hash $h$ to object $O$.}
     \label{fig.gossiping-via-hashing}
 \end{figure}
@@ -142,12 +142,12 @@ this is not possible when seeing only the hash: It should be difficult to find t
 be found by performing an exhaustive search as illustrated in Algorithm~\ref{alg.hash-preimage},
 but this will take exponential time.
 
-\import{./}{algorithms/alg.hash-preimage}
+\import{./02-primitives/}{algorithms/alg.hash-preimage}
 
 Naturally, we can define the property of \emph{preimage resistance} using a
 cryptographic game, as illustrated in \Cref{alg.preimage-game}.\index{Preimage Resistance}
 
-\import{./}{algorithms/alg.preimage-game}
+\import{./02-primitives/}{algorithms/alg.preimage-game}
 
 In this game, the challenger chooses a random $\kappa$-bit value as the input. This is denoted by
 the $x \getsrandomly S$ symbol that indicates that an element $x$ is chosen uniformly at random
@@ -167,7 +167,7 @@ as $x$. Preimage resistance is then defined as follows:
   \]
 \end{definition}
 
-\import{./}{algorithms/alg.2preimage-game}
+\import{./02-primitives/}{algorithms/alg.2preimage-game}
 
 But, perhaps, we are simply asking too much of this adversary. It would already be a big problem
 for us if the adversary, given some $x_1$, can find a \emph{different} $x_2$ that hashes to the same
@@ -208,12 +208,12 @@ We now show that collision resistance implies 2nd preimage resistance.
 
   \begin{figure}[H]
       \centering
-      \includegraphics[scale=0.65]{figures/2pre-collision.pdf}
+      \includegraphics[scale=0.65]{02-primitives/figures/2pre-collision.pdf}
       \caption{A visualization of Theorem~\ref{thm.collision-2preimage}.}
       \label{fig.2pre-collision}
   \end{figure}
 
-  \import{./}{algorithms/alg.collision-2preimage}
+  \import{./02-primitives/}{algorithms/alg.collision-2preimage}
 
   If the adversary $\mathcal{A}$ is successful in breaking the 2nd preimage game, then $\mathcal{A}'$ will be successful in breaking the collision game:
 
@@ -241,11 +241,11 @@ This is captured in the following theorem:
   in Algorithm~\ref{alg.2preimage-preimage} and Figure~\ref{fig.2preimage-preimage}.
   As $\mathcal{A}$ is PPT, so is $\mathcal{A}'$.
 
-  \import{./}{algorithms/alg.2preimage-preimage}
+  \import{./02-primitives/}{algorithms/alg.2preimage-preimage}
 
   \begin{figure}[H]
     \centering
-    \includegraphics[width=0.3 \columnwidth,keepaspectratio]{figures/2pre-pre.pdf}
+    \includegraphics[width=0.3 \columnwidth,keepaspectratio]{02-primitives/figures/2pre-pre.pdf}
     \caption{The reduction in the proof of Theorem~\ref{thm.2preimage-preimage}.}
     \label{fig.2preimage-preimage}
   \end{figure}
@@ -468,7 +468,7 @@ forgery. This is a very powerful notion. The adversary has a lot of power, so if
 we can create a signature scheme that is resilient to such adversaries, we will have
 a lot of confidence in our protocol.
 
-\import{./}{algorithms/alg.existential-forgery}
+\import{./02-primitives/}{algorithms/alg.existential-forgery}
 
 The \emph{existential forgery game} is depicted in Algorithm~\ref{alg.existential-forgery}.
 Initially, the challenger generates a keypair $(pk, sk)$ using the honest key generation

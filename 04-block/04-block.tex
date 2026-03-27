@@ -80,7 +80,7 @@ We have lost consensus on \emph{who owns what}.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.6 \columnwidth,keepaspectratio]{figures/double-spend.pdf}
+    \includegraphics[width=0.6 \columnwidth,keepaspectratio]{04-block/figures/double-spend.pdf}
     \caption{A double spend transaction. Alice paid Eve $1$ unit through $\tx_1$, but Eve spent it in both $\tx_2$ and in $\tx_2'$,
              which have different recipients.}
     \label{fig.double-spend}
@@ -93,7 +93,7 @@ Sadly, these ideas won't work.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.4 \columnwidth,keepaspectratio]{figures/simple-idea-1.pdf}
+    \includegraphics[width=0.4 \columnwidth,keepaspectratio]{04-block/figures/simple-idea-1.pdf}
     \caption{The first idea is unviable because it allows the
     adversary to retroactively invalidate an earlier transaction much later. Here, $\tx_2'$
     is initially withheld, but broadcast much later, causing an invalidation to the earlier
@@ -123,7 +123,7 @@ adopt this construction.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.325 \columnwidth,keepaspectratio]{figures/simple-idea-2.pdf}
+    \includegraphics[width=0.325 \columnwidth,keepaspectratio]{04-block/figures/simple-idea-2.pdf}
     \caption{The second idea is unviable because parties
     have views in disagreement about transaction order. Here, Charlie believes $\tx_2$
     precedes $\tx_2'$, whereas Dave believes $\tx_2'$ precedes $\tx_2$.}
@@ -150,7 +150,7 @@ simple for an adversary to do, so we cannot adopt this construction either.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.45 \columnwidth,keepaspectratio]{figures/simple-idea-3.pdf}
+    \includegraphics[width=0.45 \columnwidth,keepaspectratio]{04-block/figures/simple-idea-3.pdf}
     \caption{The third idea is unviable because parties
     disagree about whether $\tx_2$ and $\tx_2'$ have arrived within time $u$,
     and follow different policies. Here, Charlie rejects both transactions, whereas
@@ -243,7 +243,7 @@ balances. This architecture is illustrated in Figure~\ref{fig.wallet-fullnode-ar
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.65 \columnwidth,keepaspectratio]{figures/wallet-fullnode-architecture.pdf}
+    \includegraphics[width=0.65 \columnwidth,keepaspectratio]{04-block/figures/wallet-fullnode-architecture.pdf}
     \caption{The human user interacts with the wallet. The wallet interacts with the full node
     by invoking its \emph{write} and \emph{read} functionalities. The full node interacts with the network.}
     \label{fig.wallet-fullnode-architecture}
@@ -351,7 +351,7 @@ between safety and liveness. This trade-off is illustrated in Figure~\ref{fig.ti
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8 \columnwidth,keepaspectratio]{figures/time-tickets.pdf}
+    \includegraphics[width=0.8 \columnwidth,keepaspectratio]{04-block/figures/time-tickets.pdf}
     \caption{Positioning tickets in time. Tickets spread apart by slightly more than $\Delta$ (top)
              achieve good safety and liveness. Tickets spread apart less than $\Delta$ (middle)
              can cause safety violations. Tickets spread apart much more than $\Delta$ (bottom)
@@ -395,7 +395,7 @@ one obtains a ticket to issue a transaction. While solving the inequality is mod
 and requires many trial-and-error invocations of the hash function, verifying that the particular
 $B$ satisfies the equation is very easy: It requires just one hash invocation.
 
-\import{./}{algorithms/alg.proof-of-work}
+\import{./04-block/}{algorithms/alg.proof-of-work}
 
 To find a ticket, one can execute a strategy similar to the exhaustive search for finding a
 preimage. We start at a random $B = \ctr$ and keep looking for a $\ctr$ that satisfies the
@@ -521,7 +521,7 @@ a block as a rectangle and a transaction as a circle.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5 \columnwidth,keepaspectratio]{figures/block.pdf}
+    \includegraphics[width=0.5 \columnwidth,keepaspectratio]{04-block/figures/block.pdf}
     \caption{A block containing ordered transactions. We will draw a block using a rectangle
              and a transaction using a circle.}
     \label{fig.block}
@@ -561,7 +561,7 @@ illustrated in Algorithm~\ref{alg.mine-block}
 accepts both $s$ and $\overline{x}$ as parameters and tries to find a $\ctr$ that
 satisfies the proof-of-work equation.
 
-\import{./}{algorithms/alg.mine-block}
+\import{./04-block/}{algorithms/alg.mine-block}
 
 Because each block points to a previous block, the blocks form a chain. This is known
 as the \emph{blockchain}\index{Blockchain} and is illustrated in Figure~\ref{fig.chain}.
@@ -572,7 +572,7 @@ omitting the respective transactions inside for brevity.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1 \columnwidth,keepaspectratio]{figures/the-chain.pdf}
+    \includegraphics[width=1 \columnwidth,keepaspectratio]{04-block/figures/the-chain.pdf}
     \caption{A chain of blocks. The blocks were mined from left to right.}
     \label{fig.chain}
 \end{figure}
@@ -604,7 +604,7 @@ A blockchain beginning with the genesis block is illustrated in Figure~\ref{fig.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.7 \columnwidth,keepaspectratio]{figures/genesis-chain.pdf}
+    \includegraphics[width=0.7 \columnwidth,keepaspectratio]{04-block/figures/genesis-chain.pdf}
     \caption{A blockchain beginning from genesis.}
     \label{fig.genesischain}
 \end{figure}
@@ -620,7 +620,7 @@ frontpage of The Times newspaper of that day appears in Figure~\ref{fig.thetimes
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1 \columnwidth,keepaspectratio]{figures/thetimes.jpg}
+    \includegraphics[width=1 \columnwidth,keepaspectratio]{04-block/figures/thetimes.jpg}
     \caption{The genesis block contains metadata with a time anchor to real-world events.}
     \label{fig.thetimes}
 \end{figure}

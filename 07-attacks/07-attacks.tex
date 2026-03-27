@@ -162,7 +162,7 @@ $14$. Lastly, the honest parties get $16$ and everybody adopts it.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\columnwidth,keepaspectratio]{figures/selfish-mining.pdf}
+    \includegraphics[width=\columnwidth,keepaspectratio]{07-attacks/figures/selfish-mining.pdf}
     \caption{The selfish mining attack in action. Red blocks (2, 3, 6, 9, 12, 14) are adversarially
              generated, whereas blue blocks are honestly generated.}
     \label{fig.selfish-mining}
@@ -229,7 +229,7 @@ While it is not an analytical method, it can often function as a first indicator
 of whether an attack makes sense, and whether further theoretical analysis is warranted.
 It can also be used as a mechanism to double-check our theoretical results.
 
-\import{./}{algorithms/alg.selfish-simulation}
+\import{./07-attacks/}{algorithms/alg.selfish-simulation}
 
 Plugging some numbers into this simulation, we observe that, for large values of $c$
 and $m$, the average chain quality converges to $\frac{1}{2}$ for $\frac{t}{n} = \frac{1}{3}$,
@@ -365,7 +365,7 @@ makes it into the ultimate honestly adopted longest chain.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\columnwidth,keepaspectratio]{figures/censorship-attack.pdf}
+  \includegraphics[width=\columnwidth,keepaspectratio]{07-attacks/figures/censorship-attack.pdf}
   \caption{A major adversary mounts a censorship attack.}
   \label{fig.censorship-attack}
 \end{figure}
@@ -390,7 +390,7 @@ compute drops back to below $50\%$.
 % TODO: redo this graph
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\columnwidth,keepaspectratio]{figures/temporary-dishonest.pdf}
+  \includegraphics[width=\columnwidth,keepaspectratio]{07-attacks/figures/temporary-dishonest.pdf}
   \caption{The temporary dishonest majority.}
   \label{fig.temporary-dishonest}
 \end{figure}
@@ -522,7 +522,7 @@ generated blocks as well. Liveness heals, because Chain Quality heals.
 % \end{tcolorbox}
 
 % \begin{figure}[h!]
-% \[\includegraphics[scale=0.35]{figures/targetT.png}\]
+% \[\includegraphics[scale=0.35]{07-attacks/figures/targetT.png}\]
 %
 % \label{fig.convergence_opp_frequency}
 % \caption{Plot of convergence opportunity frequency versus target $T$}

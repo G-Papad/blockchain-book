@@ -155,7 +155,7 @@ A typical execution satisfies Common Prefix with $k = 2\lambda f$.
 
 \begin{figure}
     \centering
-    \includegraphics[width=16cm]{figures/common_prefix.png}
+    \includegraphics[width=16cm]{13-earnest3/figures/common_prefix.png}
     \caption{A common prefix violation. Honestly computed blocks are shown in gray, while adversarially computed blocks are shown in red. At the end of round $r$, party $P$ has adopted chain $C$ and party $P'$ has adopted chain $C'$. $B^\star$ is the most recent honestly produced block in the common prefix of $C,C'$. This is genesis if all other blocks in the common prefix are adversarial. $r'$ is the round with the last convergence opportunity. By the Pairing Lemma, convergence opportunities in rounds after the fork must be matched with a successful adversarial query. For example, $C[i'-3]$ is an adversarially produced block is matched with $C'[i'-3]$, and similarly for $C'[i'-2], C[i'-2]$. It is also possible to have multiple honestly produced blocks in a round after the fork without any convergence opportunities, as $C[i'-1], C'[i'-1]$ show.}
     \label{fig.cp_violation}
 \end{figure}

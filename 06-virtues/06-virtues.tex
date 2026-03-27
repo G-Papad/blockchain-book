@@ -116,7 +116,7 @@ exact transaction that party $P_2$ has seen at that position.
 % TODO: show an example of unsafe ledgers in a similar fashion
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.65 \columnwidth,keepaspectratio]{figures/safe-ledgers.pdf}
+    \includegraphics[width=0.65 \columnwidth,keepaspectratio]{06-virtues/figures/safe-ledgers.pdf}
     \caption{A god's eye view of the \emph{safe} ledgers of various honest parties at various moments in time.}
     \label{fig.safe-ledgers}
 \end{figure}
@@ -155,7 +155,7 @@ ledgers obtained by \emph{reading} these two chains are mutually unsafe.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5 \columnwidth,keepaspectratio]{figures/reorg-safety-loss.pdf}
+    \includegraphics[width=0.5 \columnwidth,keepaspectratio]{06-virtues/figures/reorg-safety-loss.pdf}
     \caption{A chain reorg during a temporary fork causes a safety loss.}
     \label{fig.reorg-safety-loss}
 \end{figure}
@@ -169,7 +169,7 @@ Let us initially analyze this claim in the setting where every miner is honest.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\columnwidth,keepaspectratio]{figures/mining-factions.pdf}
+    \includegraphics[width=\columnwidth,keepaspectratio]{06-virtues/figures/mining-factions.pdf}
     \caption{The timeline of two honest parties $P_1$ and $P_2$ mining in a way that causes
              the honest population to temporarily split between two factions.}
     \label{fig.mining-factions}
@@ -223,7 +223,7 @@ one chain.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8 \columnwidth,keepaspectratio]{figures/p-vs-convergence-opportunities.pdf}
+    \includegraphics[width=0.8 \columnwidth,keepaspectratio]{06-virtues/figures/p-vs-convergence-opportunities.pdf}
     \caption{The relationship between the expected block production rate $nqp$
              and the density of convergence opportunities.}
     \label{fig.p-vs-convergence-opportunities}
@@ -267,7 +267,7 @@ like Figure~\ref{fig.honest-chain-common-prefix}.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.7 \columnwidth,keepaspectratio]{figures/honest-chain-common-prefix.pdf}
+    \includegraphics[width=0.7 \columnwidth,keepaspectratio]{06-virtues/figures/honest-chain-common-prefix.pdf}
     \caption{An honest execution with some short temporary forks.}
     \label{fig.honest-chain-common-prefix}
 \end{figure}
@@ -314,7 +314,7 @@ the previous chapter. The only difference is that we have replaced $\chain$ with
 The portion $\chain[{:}{-k}]$ is called the \emph{stable}\index{Stable Chain} part of the chain, because we
 are assured it will not change.
 
-\import{./}{algorithms/alg.read-stable}
+\import{./06-virtues/}{algorithms/alg.read-stable}
 
 We have finally achieved safety. This is captured in the following theorem, whose proof we will
 complete in Chapter~\ref{chapter.earnest2}.
@@ -362,7 +362,7 @@ to Eve's chain. She will take her money back, and she will have gotten away with
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.7 \columnwidth,keepaspectratio]{figures/nakamoto-race.pdf}
+    \includegraphics[width=0.7 \columnwidth,keepaspectratio]{06-virtues/figures/nakamoto-race.pdf}
     \caption{The Nakamoto Race.}
     \label{fig.nakamoto-race}
 \end{figure}
@@ -393,7 +393,7 @@ argument of why a minority adversary cannot break $k$ Common Prefix.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8 \columnwidth,keepaspectratio]{figures/x-vs-z.pdf}
+    \includegraphics[width=0.8 \columnwidth,keepaspectratio]{06-virtues/figures/x-vs-z.pdf}
     \caption{Honest \emph{vs} adversarially successful queries with a minority adversary.}
     \label{fig.x-vs-z}
 \end{figure}
@@ -424,7 +424,7 @@ than adversarial successes.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8 \columnwidth,keepaspectratio]{figures/x-vs-y-vs-z.pdf}
+    \includegraphics[width=0.8 \columnwidth,keepaspectratio]{06-virtues/figures/x-vs-y-vs-z.pdf}
     \caption{Convergence opportunities \emph{vs} adversarial queries with honest majority
              in a misconfigured blockchain.}
     \label{fig.x-vs-y-vs-z}
@@ -441,7 +441,7 @@ opportunities, can lead to a situation of a \emph{fan-out}\index{Fan Out}.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8 \columnwidth,keepaspectratio]{figures/fan-out.pdf}
+    \includegraphics[width=0.8 \columnwidth,keepaspectratio]{06-virtues/figures/fan-out.pdf}
     \caption{A misconfigured blockchain can be subject to fan-outs, even under honest majority.}
     \label{fig.fan-out}
 \end{figure}
@@ -512,7 +512,7 @@ the quality of this chunk is $\mu = \frac{2}{3}$.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.7 \columnwidth,keepaspectratio]{figures/chain-quality.pdf}
+    \includegraphics[width=0.7 \columnwidth,keepaspectratio]{06-virtues/figures/chain-quality.pdf}
     \caption{An honesty adopted chain with both honestly and adversarially generated blocks.
              Adversarial blocks are numbered $1, 2, 5, 7, 8$ and shown in red.}
     \label{fig.chain-quality}
@@ -621,21 +621,21 @@ and liveness follows from Chain Growth and Chain Quality together.
 
 \begin{figure}[htbp!]
   \centering
-  \includegraphics[width=0.7 \columnwidth,keepaspectratio]{figures/blocktree-problem-6.pdf}
+  \includegraphics[width=0.7 \columnwidth,keepaspectratio]{06-virtues/figures/blocktree-problem-6.pdf}
   \caption{The blocktree.}
   \label{fig.blocktree-problem-6}
 \end{figure}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.7 \columnwidth,keepaspectratio]{figures/tx-graph-problem-6.pdf}
+  \includegraphics[width=0.7 \columnwidth,keepaspectratio]{06-virtues/figures/tx-graph-problem-6.pdf}
   \caption{The transaction graph \Cref{problem.tx-graph}.}
   \label{fig.tx-graph}
 \end{figure}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.7 \columnwidth,keepaspectratio]{figures/timeline-problem-6.pdf}
+  \includegraphics[width=0.7 \columnwidth,keepaspectratio]{06-virtues/figures/timeline-problem-6.pdf}
   \caption{The timeline for \Cref{problem.timeline}.}
   \label{fig.timeline}
 \end{figure}

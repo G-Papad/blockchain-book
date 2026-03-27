@@ -121,7 +121,7 @@ and mines block $7$ on top of block $5$.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.4 \columnwidth,keepaspectratio]{figures/regular-adv-honest-queries.pdf}
+    \includegraphics[width=0.4 \columnwidth,keepaspectratio]{05-chain/figures/regular-adv-honest-queries.pdf}
     \caption{A series of successful honest (black solid diamonds) and adversarial (red hollow circles) queries
              regularly spaced apart more than $\Delta$.}
     \label{fig.regular-adv-honest-queries}
@@ -136,7 +136,7 @@ we have honest views in disagreement.
 % todo: add the network timeline of parties 6 and 7 to illustrate how messages were received
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.4 \columnwidth,keepaspectratio]{figures/chain-fork.pdf}
+    \includegraphics[width=0.4 \columnwidth,keepaspectratio]{05-chain/figures/chain-fork.pdf}
     \caption{A block\emph{tree} instead of a block\emph{chain} arising out of the timeline
              of figure~\ref{fig.regular-adv-honest-queries}.}
     \label{fig.chain-fork}
@@ -169,7 +169,7 @@ it to a different parent to make it appear newer than it is.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.7 \columnwidth,keepaspectratio]{figures/blockchain-invalidation.pdf}
+    \includegraphics[width=0.7 \columnwidth,keepaspectratio]{05-chain/figures/blockchain-invalidation.pdf}
     \caption{Changing just one small part of a block's content causes a cascading effect invalidating the proof-of-work of the whole chain inheriting from that block.}
     \label{fig.blockchain-invalidation}
 \end{figure}
@@ -231,7 +231,7 @@ order as they appear within the genesis block's transaction sequence $B_0.\overl
 next, the transactions of the block following genesis are appended; and so on, until
 the transactions of the tip are appended.
 
-\import{./}{algorithms/alg.read-naive}
+\import{./05-chain/}{algorithms/alg.read-naive}
 
 As you can judge by the name of this rule, this is a rule which we plan to
 soon revise (in Chapter~\ref{chapter.virtues}).
@@ -251,7 +251,7 @@ mine blocktrees and be in disagreement.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8 \columnwidth,keepaspectratio]{figures/stochastic-queries.pdf}
+    \includegraphics[width=0.8 \columnwidth,keepaspectratio]{05-chain/figures/stochastic-queries.pdf}
     \caption{The stochastic nature of work makes honest successful queries irregular.}
     \label{fig.stochastic-queries}
 \end{figure}
@@ -274,7 +274,7 @@ let us try to understand how the longest chain protocol works a little more prec
 % TODO: change this blocktree so that some temporary fork is 2 blocks long
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8 \columnwidth,keepaspectratio]{figures/honest-chain-fork.pdf}
+    \includegraphics[width=0.8 \columnwidth,keepaspectratio]{05-chain/figures/honest-chain-fork.pdf}
     \caption{A blocktree arising out of the timeline of honest-only queries of Figure~\ref{fig.stochastic-queries}.}
     \label{fig.honest-chain-fork}
 \end{figure}
@@ -342,7 +342,7 @@ The honest parties adopt the newly broadcasted adversarial chain, abandoning the
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.6 \columnwidth,keepaspectratio]{figures/adversarial-majority.pdf}
+    \includegraphics[width=0.6 \columnwidth,keepaspectratio]{05-chain/figures/adversarial-majority.pdf}
     \caption{An adversary with dishonest majority (top red chain) can outpace the honest parties (bottom
              blue chain).}
     \label{fig.adversarial-majority}
@@ -395,7 +395,7 @@ be their own, so that they can reap the benefits of mining.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.23 \columnwidth,keepaspectratio]{figures/coinbase.pdf}
+    \includegraphics[width=0.23 \columnwidth,keepaspectratio]{05-chain/figures/coinbase.pdf}
     \caption{A coinbase transaction paying Alice the amount of 950 units. The coinbase has no inputs and a single output.}
     \label{fig.coinbase}
 \end{figure}
@@ -434,7 +434,7 @@ is not lost, but the miner is allowed to reclaim it as part of their coinbase va
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.4 \columnwidth,keepaspectratio]{figures/fee.pdf}
+    \includegraphics[width=0.4 \columnwidth,keepaspectratio]{05-chain/figures/fee.pdf}
     \caption{A transaction with an input of $10$ and an output of $7$ pays a fee of $3$ units that
              go to the coinbase output.}
     \label{fig.fee}
@@ -519,7 +519,7 @@ In this example, $B.\overline{x} = (\tx_1, \tx_2, \tx_3, \tx_4)$.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.7 \columnwidth,keepaspectratio]{figures/block-tx-validation.pdf}
+    \includegraphics[width=0.7 \columnwidth,keepaspectratio]{05-chain/figures/block-tx-validation.pdf}
     \caption{Validating the $\overline{x}$ part of block $B$. The intermediate states
              are shown as purple cylinders. The state $\st_{B'}$ comes from a block
              which has already been validated (shown partially on the left).}
@@ -607,7 +607,7 @@ is unapplicable, the transaction is thrown away and the mempool state remains un
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.7 \columnwidth,keepaspectratio]{figures/chain-state-validation.pdf}
+    \includegraphics[width=0.7 \columnwidth,keepaspectratio]{05-chain/figures/chain-state-validation.pdf}
     \caption{The state and mempool calculation in the case of a reorg. Ancestry relations
              are shown in solid arrows, whereas state updates are shown in dashed arrows.
              Blocks are depicted as blue solid bloxes; states are depicted as purple cylinders;
