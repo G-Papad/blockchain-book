@@ -170,15 +170,13 @@ With this data structure, the data transferred is a list of $\pi$ values and the
 
 The Merkle tree structure is described by the functions
 \begin{align}
-\mathrm{compress}(D) &\rightarrow h_\epsilon,\\ \mathrm{prove}(D, j) &\rightarrow \pi, \text{ and} \\ \mathrm{verify}(h_\epsilon, d, j, \pi) &\rightarrow \begin{cases}
-\mathrm{true} & \text{if valid} \\
-\mathrm{false} & \text{otherwise}
-\end{cases}.
+\mathrm{commit}(D) &\rightarrow h,\\ \mathrm{prove}(D, j) &\rightarrow \pi, \text{ and} \\
+\mathrm{verify}(h, d, j, \pi) \text{ is a boolean}.
 \end{align}
-The correctness of the Merkle tree is specified as:
+
+The correctness of a Vector Commitment is specified as:
 \begin{align}
-    \forall D, \forall j,
-    \mathrm{verify}(\mathrm{compress}(D), D[j], j, \mathrm{prove}(D, j)) = \mathrm{true}
+  \forall D \forall j \mathrm{verify}(\mathrm{commit}(D), D[j], j, \mathrm{prove}(D, j)) = \mathrm{true}
 \end{align}
 
 \subsection{Security of Merkle Trees}

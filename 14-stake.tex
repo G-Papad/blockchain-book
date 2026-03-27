@@ -255,11 +255,22 @@ $10$.
 
 Let us now remove the restriction that each party holds exactly one unit of money,
 and allow different parties to hold different monetary amounts. The stake distribution
-will now be a map from public keys to non-negative integer amounts. The honest majority
+will now be a map from public keys.
+
+\begin{definition}[Stake Distribution]
+  A \emph{stake distribution} is a function $\SD\colon \PKI \longrightarrow [0, 1]$
+  such that $\sum_{\pk \in \PKI} \SD(\pk) = 1$.
+\end{definition}
+
+To simplify later developments, we have normalized the stake distribution function
+to the range $[0, 1]$, but, naturally, a real system must continue to use integer amounts
+to avoid floating-point errors, a detail we are now abstracting away.
+
+The honest majority
 assumption needs to be altered to weight keys by the amount of money they hold:
 
 \begin{definition}[Honest Stake Majority Assumption]
-  For a given \emph{stake distribution} $\SD\colon \PKI \longrightarrow \mathbb{N}$
+  For a given \emph{stake distribution} $\SD\colon \PKI \longrightarrow [0, 1]$
   of some public key infrastructure $\PKI$ among which $\Hon \subseteq \PKI$ are honest, we say
   that the \emph{honest stake majority assumption} holds if
   \[
@@ -282,9 +293,19 @@ the target.
 %  e) \delta \delta \delta
 
 \begin{definition}[Target Function]
-  A \emph{target function} is a function $\phi\colon [0, 1] \longrightarrow [2^\kappa]$ that maps
-  a normalized stake value to a target.
+  A \emph{target function} is an increasing function $\phi\colon [0, 1] \longrightarrow [0, 1]$ that maps
+  a normalized stake value to a normalized target, with $\phi(0) = 0$, $\phi(1) = 1$.
 \end{definition}
+
+The inequality then uses a different target per party:
+
+\[
+  \frac{H(\sl \concat \pk)}{2^\kappa} < \phi(\SD(\pk))
+\]
+
+Note that we have normalized the output of the hash value to the range $[0, 1]$ as well.
+You can think of $\phi$ as the desired probability that a party with stake $\SD(\pk)$
+obtain a block for a given slot.
 
 % TODO: broken example... then go to aggregation independence
 
