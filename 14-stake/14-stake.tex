@@ -264,7 +264,8 @@ will now be a map from public keys.
 
 To simplify later developments, we have normalized the stake distribution function
 to the range $[0, 1]$, but, naturally, a real system must continue to use integer amounts
-to avoid floating-point errors, a detail we are now abstracting away.
+to avoid floating-point errors, a detail we are now abstracting away. We call this the
+\emph{relative stake}\index{Relative Stake} of a party.
 
 The honest majority
 assumption needs to be altered to weight keys by the amount of money they hold:
@@ -294,7 +295,7 @@ the target.
 
 \begin{definition}[Target Function]
   A \emph{target function} is an increasing function $\phi\colon [0, 1] \longrightarrow [0, 1]$ that maps
-  a normalized stake value to a normalized target, with $\phi(0) = 0$, $\phi(1) = 1$.
+  a normalized stake value to a normalized target, with $\phi(0) = 0$.
 \end{definition}
 
 The inequality then uses a different target per party:
@@ -305,7 +306,44 @@ The inequality then uses a different target per party:
 
 Note that we have normalized the output of the hash value to the range $[0, 1]$ as well.
 You can think of $\phi$ as the desired probability that a party with stake $\SD(\pk)$
-obtain a block for a given slot.
+obtains a block for a given slot.
+
+The first function $\phi$ that comes to mind is the identity function $\phi(x) = x$.
+Using this function, the probability of finding a block is exactly equal to the propotion
+of the total stake that one owns. For this $\phi$, consider the case $n = 100$ and $t = 50$
+in which the adversary controls exactly half of the parties, and suppose each party controls
+the same amount of stake. Let us walk through the probability a given slot is honest.
+This happens when at least one honest party succeeds. Namely, it is \emph{not}
+the case that \emph{all} honest parties \emph{fail} to have a successful query in that slot.
+\[
+  \Pr[\text{the slot is honest}] = 1 - (1 - \frac{1}{50})^{50} \simeq 0.395\,.
+\]
+The probability is the same for an adversary that plays honestly.
+
+The expected number of honest blocks
+produced within the given slot is
+\[
+  \E[\text{blocks produced}] = 50 \times \frac{1}{100} = \frac{1}{2}\,,
+\]
+and the same is the case for the adversary playing honestly.
+
+However, there is an adversarial
+strategy that can improve her probability of getting an adversarial slot: The adversary
+\emph{aggregates} the stake of her $50$ corrupted parties into a single public key, but
+otherwise plays honestly. In
+that case, her single party has a relative stake of $\frac{1}{2}$.
+The expected number of adversarial blocks produced within the given slot remains $\frac{1}{2}$,
+but the probability of getting an
+adversarial slot is $\frac{1}{2} > 0.395$. On the other hand, honest parties do not have the ability
+to aggregate their stake, and so are at a disadvantage.
+This discrepancy of probabilities stems from the fact that, if multiple honest parties succeed in
+finding a block in the same slot, this does not help the protocol make more progress than a single party
+succeeding.
+
+We'd like to design a target function $\phi$ which is \emph{aggregation independent}\index{Aggregation Independence}.
+Namely the probability of succeeding in a given slot must be the same for the two following cases:
+(a) for a \emph{group} of keys controlling a \emph{total} relative stake $\alpha$, and
+(b) for a \emph{single} key aggregately controlling the same relative stake $\alpha$.
 
 % TODO: broken example... then go to aggregation independence
 
@@ -314,7 +352,6 @@ obtain a block for a given slot.
 
 {\color{red}
 \begin{itemize}
-\item The honest stake assumption
 \item Combining honest and adversarial randomness to obtain unbiased randomness
 \item Pseudorandomness: Getting more randomness from little randomness
 \item Epoch randomness
