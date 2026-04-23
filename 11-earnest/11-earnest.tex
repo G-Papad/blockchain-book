@@ -109,23 +109,21 @@ In order to rigorously define properties of our blockchain and give security pro
             \Comment{Genesis block}
             \For{$i \gets 1 \text{ to } n - t$}
                 \Comment{Boot stateful honest parties}
-                \State $P_i \leftarrow$ {\textsf{new }} $\Pi^{H_{\kappa,i}}(\mathcal{G})$
+                \State $P_i \leftarrow$ {\textsf{new}} $\Pi^H(\mathcal{G})$
             \EndFor
-            \State $A \leftarrow${\textsf{new }} $\mathcal{A}^{H_{\kappa,0}}(\mathcal{G}, n, t)$
+            \State $A \leftarrow${\textsf{new}} $\mathcal{A}^H(\mathcal{G}, n, t)$
             \Comment{Boot stateful adversary}
             \State $\overline{M} \leftarrow []$ \Comment{2D array of messages}
             \For{$i \gets 1 \text{ to } n - t$}
                 \State $\overline{M}[i] \leftarrow []$ \Comment{Each honest party has an array of messages}
             \EndFor
-            \While{$r < \textsf{poly}(\kappa)$} \Comment{Number of rounds}
-                \State $r \leftarrow r + 1$
+            \For{$r \gets 1 \text{ to } \textsf{poly}(\kappa)$} \Comment{Number of rounds}
                 \State $M \leftarrow \emptyset$
                 \For{$i \gets 1 \text{ to } n - t$} \Comment{Execute honest party $i$ for round $r$}
-                    \State $Q \leftarrow q$ \Comment{Maximum number of oracle queries per honest party (Section 2)}
+                    \State $Q \leftarrow q$ \Comment{Max honest party oracle queries}
                     \State $M \leftarrow M \cup \{P_i.\textsf{execute}^H(\overline{M}[i])\}$ \Comment{Adversary collects all messages}
-
                 \EndFor
-                \State $Q \leftarrow tq$ \Comment{Max number of Adversarial oracle queries}
+                \State $Q \leftarrow tq$ \Comment{Max adversarial oracle queries}
                 \State $\overline{M} \leftarrow A.\textsf{execute}^H(M)$
                 \Comment{Execute rushing adversary for round $r$}
                 \For{$m \in M$}\Comment{Ensure all parties will receive message $m$}
@@ -134,7 +132,7 @@ In order to rigorously define properties of our blockchain and give security pro
                         \State{$\textsf{assert}(m \in \overline{M}[i])$}\Comment{Non-eclipsing assumption}
                     \EndFor
                 \EndFor
-            \EndWhile
+            \EndFor
         \EndFunction
         \vskip8pt
     \end{algorithmic}
@@ -166,18 +164,17 @@ Secondly, in order to model the hash rate, we give each party a maximum number o
 \begin{algorithm}[H]
     \caption{\label{alg.hash} The Hash Function in the Random Oracle Model}
     \begin{algorithmic}[1]
-        \State $r \leftarrow 0$
-        \State $\mathcal{T} \leftarrow \{\}$ \Comment{Initiate Cache}
-        \State $Q \leftarrow 0$ \Comment{$q$ for honest parties, $qt$ for adversary}
+        \State $\mathcal{T} \leftarrow \{\}$
+        \State $Q \leftarrow 0$
         \Function{$H_\kappa$}{$x$}
             \If{$x \not\in \mathcal{T}$} \Comment{First time being queried}
                 \If{$Q = 0$} \Comment{Out of Queries}
                     \State\Return{$\bot$}
                 \EndIf
                 \State $Q \leftarrow Q - 1$
-                \State$\mathcal{T}[x] \overset{\$}{\leftarrow} \{0, 1\}^\kappa$ \Comment{Sample uniformly at random from output space and store in Cache}
+                \State$\mathcal{T}[x] \overset{\$}{\leftarrow} \{0, 1\}^\kappa$
             \EndIf
-            \State\Return$\mathcal{T}[x]$ \Comment{Return value from Cache}
+            \State\Return$\mathcal{T}[x]$
         \EndFunction
         \vskip8pt
     \end{algorithmic}
@@ -204,28 +201,26 @@ The third algorithm is used to extract all transactions from a blockchain. This 
      \State{$\mathcal{G}$}
      \Let{\chain}{[\,]}
         \Function{$\textsf{Constructor}$}{$\mathcal{G}'$}
-            \State $\mathcal{G} \leftarrow \mathcal{G}'$ \Comment{Select Genesis Block}
-            \State $\chain \leftarrow [\mathcal{G}]$ \Comment{Add Genesis Block to start of chain}
-            \State \textsf{round} $\leftarrow 1$
+            \Let{\mathcal{G}}{\mathcal{G}'}
+            \Let{\chain}{[\mathcal{G}]}
         \EndFunction
-        \Function{$\textsf{Execute}$}{$1^\kappa$}
-            \Let{M}{\emptyset}
-            \State $\tilde\chain \leftarrow$ maxvalid$(C, \bar M[i])$ \Comment{Adopt Longest Chain in the network}
+        \Function{$\textsf{Execute}$}{$M_\textsf{in}$}
+            \Let{M_\textsf{out}}{\emptyset}
+            \Let{\tilde\chain}{\textsf{maxvalid}(\chain, M_\textsf{in})}
             \If{$\tilde\chain \neq \chain$}
-                \Let{M}{\{\tilde\chain\}}
+                \Let{M_\textsf{out}}{M_\textsf{out} \cup \{\tilde\chain\}}
                 \Let{\chain}{\tilde\chain}
             \EndIf
             \Let{x}{\textsc{Input}()} \Comment{Take all transactions in mempool}
             \Let{B}{\textsf{PoW}(x, \tilde\chain)}
             \If{$B \neq \bot$} \Comment{Successful Mining}
                 \Let{\chain}{\chain \conc B} \Comment{Add block to current longest chain}
-                \Let{M}{M \cup \{\chain\}}
+                \Let{M_\textsf{out}}{M_\textsf{out} \cup \{\chain\}}
             \EndIf
-            \State {\textsf{round}} $\leftarrow$ {\textsf{round}+1}
             \State\Return$M$
         \EndFunction
         \Function{$\textsf{Read}$}{}
-            \Let{x}{[\,]} \Comment{Instantiate transactions}
+            \Let{x}{[\,]}
             \For{$B \in \chain$}
                 \Let{x}{x \conc \chain.x} \Comment{Extract all transactions from each block in the chain}
             \EndFor
@@ -247,7 +242,7 @@ The algorithm below is run by miners to find a new block. Notice that all partie
           \State{$ctr \overset{\$}{\leftarrow} \{0,1\}^\kappa$} \Comment{Randomly sample Nonce}
           \For{$i \gets 1 \text{ to } q$} \Comment{Number of available queries per party}
               \State $B \leftarrow s || x || ctr$ \Comment{Create block}
-              \If{$H(B) \leq T$} \Comment{Successful Mining}
+              \If{$H(B) < T$} \Comment{Successful Mining}
                   \State\Return{$B$}
               \EndIf
               \Let{\ctr}{\ctr + 1}
@@ -267,7 +262,7 @@ This algorithm is run by honest nodes in order to adopt the longest chain each r
     \Function{$\textsf{maxvalid}_{\mathcal{G},\delta(\cdot)}$}{$\overline{C}$}
         \State $C_\textsf{max} \leftarrow [\mathcal{G}]$ \Comment{Start with current adopted chain}
         \For{$C \in \overline{C}$} \Comment{Iterate for every chain received through gossip network}
-            \If{$\textsf{validate}_{\mathcal{G},\delta(\cdot)}(C) \land |C| > |C_\textsf{max}|$} \Comment{Longest Chain Rule}
+            \If{$\textsf{validate}_{\mathcal{G},\delta(\cdot),\st_0}(C) \land |C| > |C_\textsf{max}|$} \Comment{Longest Chain Rule}
                 \State $C_\textsf{max} \leftarrow C$
             \EndIf
         \EndFor
@@ -283,21 +278,21 @@ This algorithm is used to validate a block, it is called in line 4 of the longes
 \begin{algorithm}[H]
     \caption{\label{alg.validate} The validate algorithm}
     \begin{algorithmic}[1]
-    \Function{$\textsf{validate}_{\mathcal{G},\delta(\cdot)}$}{$C$}
+    \Function{$\textsf{validate}_{\mathcal{G},\delta(\cdot),\st_0}$}{$C$}
         \If{$C[0] \neq \mathcal{G}$} \Comment{Check that first block is Genesis}
             \State\Return$\false$
         \EndIf
-        \State st $\leftarrow$ st$_0$ \Comment{Start at Initial state}
-        \State $h \leftarrow H(C[0])$
-        \State st $\leftarrow \delta^*(st, C[0].x)$
+        \Let{\st}{\st_0}
+        \Let{h}{H(C[0])}
+        \Let{\st}{\delta^*(\st, C[0].x)}
         \For{$B \in C[1{:}]$} \Comment{Iterate for every block in the chain}
-            \State $(s, x, ctr) \leftarrow B$
-            \If{$H(B) > T \lor s \neq h$} \Comment{PoW check and Ancestry check}
+            \Let{(s, x, \ctr)}{B}
+            \If{$H(B) \geq T \lor s \neq h$} \Comment{PoW check and Ancestry check}
                 \State\Return$\false$
             \EndIf
-            \State st $\leftarrow \delta^*(st, B.x)$ \Comment{Application Layer: update UTXO \& validate transactions}
+            \State st $\leftarrow \delta^*(st, B.x)$ \Comment{Execution layer}
             \If{$st = \bot$}
-                \State\Return$\false$\Comment{Invalid state transition}
+                \State\Return$\false$
             \EndIf
             \State $h \leftarrow H(B)$
         \EndFor

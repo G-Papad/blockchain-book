@@ -101,30 +101,32 @@ Similarly, $X(S)$ counts the number of honestly successful rounds in the interva
 \subsection{Chain Growth Lemma}
 
 \begin {lemma}[Chain Growth Lemma]
-    Suppose that at round $r$, an honest party $P$ has a chain of length $l$. Then by round $r' \geq r$, every honest party has adopted a chain of length at least $l + \sum_{i=r}^{r'-1} X_i$.
+    Suppose that at round $r$, an honest party $P$ has a chain of length $\ell$. Then by round $r + j \geq r$, every honest party has adopted a chain of length at least $\ell + \sum_{i=r}^{r + j - 1} X_i$.
 \end {lemma}
 
-Since $X_r$ only indicates whether there is at least one successful honest query, we do not overestimate chain length by counting multiple honest parties mining blocks that are forks of each other.
-Also note that the sum $\sum_{i=r}^{r-1} X_i$ is defined to be $0$.
+\begin{proof}
+We will prove by induction that all parties at round $r + j$ have a chain with at least $l + \sum_{i=r}^{r + j - 1}$ blocks,
+for all values of $j \geq 0$.
 
-\begin {proof}
-We will prove by induction that all parties have chain lengths at round $r'$ of at least $l + \sum_{i=r}^{r'-1}$ for all values of $r' \geq r$.
+The induction is on $j$. In the base case $j=0$,
+if an honest party has a chain $C$ of length $\ell$ at round $r$, then that party broadcast $C$ at a round earlier than $r$.
+It follows that every honest party will receive $C$ by round $r$, and therefore adopts a chain of length at least
+$|C| = \ell = \ell + \sum_{i=r}^{r + 0 - 1} X_i$ by the longest chain rule.
 
-We will perform a proof by induction on $r'$. In the base case $r'=r$,
-if an honest party has a chain $C$ of length $l$ at round $r$, then that party broadcast $C$ at a round earlier than $r$. It follows that every honest party will receive $C$ by round $r$, and therefore adopts a chain of length at least
-$|C| = l = l + \sum_{i=r}^{r'-1}$.
+For $j>0$.
+For the inductive step, suppose that for all honest parties
+$P$, $|C^P_{r+j}| \geq \ell + \sum_{i=r}^{r+j-1} X_i$. We are interested in the length
+$|C^P_{r+j+1}|$.
 
-For $r'>r$, suppose $C_{r'}$ is the chain adopted by an honest party.
-For the inductive step, suppose $|C_{r+j}| \geq l + \sum_{i=r}^{r+j-1} X_i$. Consider the following two cases:
+Consider the following two cases:
 \begin{enumerate}
-\item Case 1: $X_{r+j} = 0$. Due to the longest chain rule, $|C_{r + j + 1}|$ must be at least as long as $|C_{r+j}|$, and $\sum_{i=r}^{r+j} X_i = \sum_{i=r}^{r+j - 1} X_i$, therefore, it is clear that $|C_{r+j+1}| \geq |C_{r+j}| \geq l + \sum_{i=r}^{r + j + 1} X_i$
-\item Case 2: $X_{r+j} = 1$. At round $r + j$ all parties have adopted chains of length $|C_{r+j}|$, so due to the longest chain rule, the honest party must have mined a chain of at least length $|C_{r+j}| + 1$ at round $r + j$. Therefore, $|C_{r + j + 1}| = |C_{r + j}| + 1 \geq l + \sum_{i=r}^{r + j} X_i$.
+\item Case 1: $X_{r+j} = 0$. Due to the longest chain rule, $|C^P_{r + j + 1}|$ must be at least as long as $|C^P_{r+j}|$, and $\sum_{i=r}^{r+j} X_i = \sum_{i=r}^{r+j - 1} X_i$. Therefore, $|C^P_{r+j+1}| \geq |C^P_{r+j}| \geq \ell + \sum_{i=r}^{r + j + 1} X_i$. The inequality is due to the fact that the adversary could also have broadcast blocks during $r+j$.
+\item Case 2: $X_{r+j} = 1$. By the definition of $X$, some honest party $P$ has mined a block at round $r+j$. At round $r + j$ all parties have adopted chains of length $|C_{r+j}|$, so due to the longest chain rule, $P$ must have mined a chain of at least length $|C_{r+j}| + 1$ at round $r + j$. This block was then broadcast by $P$ at the end of round $r+j$ and, by the longest chain rule, was adopted by all honest parties by round $r+j+1$. Therefore, $|C^P_{r + j + 1}| = |C^P_{r + j}| + 1 \geq \ell + \sum_{i=r}^{r + j} X_i$.
 \end{enumerate}
-We see that through induction, our statement holds for all $j$.
-Note that this proof requires that $P(X_r = 1) \not = 0$, for there to be Chain Growth.
-% All these variables are independent of each other ($X_i$ with $X_j$, $Y_i$ with $Y_j$) because each query is random.
+\end{proof}
 
-\end {proof}
+Since $X_r$ only indicates whether there is at least one successful honest query, we do not overestimate chain length by counting multiple honest parties mining blocks that are forks of each other. This lemma will later enable us to prove Chain Growth when we should that sometimes $X_r = 1$.
+
 \subsection{Proving Common Prefix and Chain Growth}
 
 First, let's consider the relations between the expectations of $X, Y, Z$ under the honest majority assumption. It is clear that $\E[X(S)] > \E[Y(S)]$, because an honestly successful round is not necessarily a convergence opportunity. Moreover, we expect that $\E[X(S)] > \E[Z(S)]$ due to the honest majority assumption because less computing power implies fewer expected successful queries (this will be formally proven later). Therefore, under the honest majority assumption, we would expect that $\E[Z(S)] < \E[Y(S)] < \E[X(S)]$.
