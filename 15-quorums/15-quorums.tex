@@ -1,6 +1,83 @@
 \chapter{Quorums \small{\textsf{DRAFT}}}\label{chapter.quorums}
 
 \section*{Problems}
+\begin{problems}
+    \item Recall the longest chain PoS protocol, Ouroboros Praos, we studied in class.
+        Ouroboros Praos is \emph{available} but not \emph{accountable}. We modify Ouroboros Praos to
+        include a slashing mechanism: if the same key is used to create two blocks for
+        the same height, we slash the key. Is the modified protocol $t$-accountably
+        safe? If yes, prove it and find $t$. If not, is there another slashing mechanism
+        that could make the protocol $t$-accountably safe?
+    
+    \item In this problem, we will consider the Simplex protocol run by $n$ permissioned
+        nodes, with a tunable quorum size $q$ for notarization.
+        \begin{enumerate}
+            \item Suppose we want to maximize the resilience of the protocol, i.e.,
+            maximize the number of adversarial nodes $f$ that can be tolerated such
+            that the protocol is both safe and live. Derive the optimal quorum size
+            $q$ and show that the resulting optimal resilience is $f = n/3$.
+            \item Suppose you believe that an attack against safety is more likely than
+            an attack against liveness (since a double-spend can provide significant
+            rewards to the attacker). Hence, you want to tune Simplex to increase the
+            resilience against safety attacks, even at the expense of decreasing the
+            resilience against a liveness attack. Can this be done? If so, exhibit and
+            plot the tradeoff between the two resiliences. If not, explain why not.
+        \end{enumerate}
+    
+    \item Consider the Simplex protocol we presented in class. Consider the following
+        variations of the protocol and in each case explain if the security (safety and
+        liveness) of the protocol is preserved. In each case, provide a proof that the
+        protocol retains each virtue or a show a counterexample in which it fails.
+        \begin{enumerate}
+            \item We completely remove the timer of the protocol.
+            \item We change the timer from $3\Delta$ to $2\Delta$.
+            \item We change the timer from $3\Delta$ to $4\Delta$.
+        \end{enumerate}
+
+    \item We modify the Simplex protocol to include a timestamp $r$ in each non-dummy
+        block. When an honest party creates a block, they put their clock's time as the
+        timestamp $r$. In a valid chain, consecutive blocks have non-decreasing
+        timestamps and no timestamp is in the future. We assume that honest parties have
+        sychronized clocks and the network is synchronous.
+        We are interested in how much the timestamp of the finalized tip of an
+        honest party can deviate from their clock's time. Compute an upper bound $v$ such
+        that any honest party's tip will not deviate from their clock more than $v$
+        except with negligible probability. Your bound does not need to be tight.
+    
+    \item Consider the Simplex protocol we studied in class.
+        \begin{enumerate}
+            \item Simplex is said to have finality whenever the number of honest
+                nodes exceeds $2n/3$, where $n$ is the total number of nodes. Explain
+                what that means.
+            \item Simplex is said to be {\em $1/3$-accountable}. Explain what
+                that means.
+            \item Now suppose a synchronous network with $\Delta = 1$ second and
+                $n = 100$ nodes and the nodes are all honest.
+                \begin{enumerate}
+                    \item Compute the expected growth rate of the notarized
+                        chain (in blocks per second).
+                    \item Compute the expected growth rate of the finalized
+                        chain (in blocks per second).
+                \end{enumerate}
+            \item Now suppose $20$ nodes are still adversary, but instead of having the
+                full $80$ honest nodes online, $30$ of them decide not to participate in
+                the protocol and went on vacation to Ikaria. However, the protocol
+                designer does not know this and the protocol parameters are not
+                adjusted.
+                \begin{enumerate}
+                \item Compute a tight lower bound on the expected growth
+                        rate of the longest notarized chain.
+                \item Compute a lower bound on the expected growth rate of
+                        the finalized chain. (Your lower bound does not need to be tight.
+                        However if the lower bound is not tight, it must be positive.)
+                \item Is the protocol safe? Is the protocol live?
+                \end{enumerate}
+            \item A quorum-based protocol is said to be {\em available} if it
+                is safe \emph{and} live whenever the number of honest nodes online is
+                greater than twice the number of adversary nodes. Is Simplex available?
+        \end{enumerate}
+
+\end{problems}
 
 \section*{Further Reading}
 
