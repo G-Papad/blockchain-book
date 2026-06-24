@@ -462,4 +462,37 @@ In the next chapter, we will use the tools developed today to show that in typic
             prefix? What strategy should she follow?
         \end{enumerate}
 
+        \item Consider a \emph{typical} Bitcoin Backbone execution correctly parameterized
+            under honest majority in the static proof-of-work model.
+
+            \begin{enumerate}
+            \item An honest party $P_1$ broadcasts a new transaction $\tx_1$ at round $r_1$
+                and another honest party $P_2$ broadcasts a new transaction $\tx_2$ at round
+                $r_2 \geq r_1$. Both transactions are included in the \emph{same} block $B$,
+                which eventually becomes stable and adopted by all honest parties. You
+                correctly reason that, since the two transactions were both confirmed in the
+                \emph{same} block, they must have been broadcast closely together in time.
+
+                Calculate an upper bound $d \in \mathbb{N}$ for the interval $r_2 - r_1$
+                such that we can rest assured that $r_2 - r_1 \leq d$. Your bound does not
+                need to be tight, but needs to hold always for typical executions. Your
+                bound can be a function of all the execution parameters ($\epsilon, \lambda,
+                f, p, T, n, t, k, u, \mu, \ell, s, \tau$). Prove that your bound holds.
+
+            \item An honest party $P_1$ broadcasts a new transaction $\tx_1$ at round $r$
+                and an honest party $P_2$ broadcasts a new transaction $\tx_2$ at the
+                \emph{same} round $r$. However, the transactions make it on different blocks
+                $B_1$ with height $h_1$ and $B_2$ with height $h_2 > h_1$ of the same chain
+                that eventually becomes stable and adopted by all honest parties. You
+                correctly reason that, since the two transactions were both broadcast at the
+                \emph{same} time, they must be included close together on the chain.
+
+                Calculate an upper bound $d \in \mathbb{N}$ for the distance $h_2 - h_1$
+                such that we can rest assured that $h_2 - h_1 \leq d$. Your bound does not
+                need to be tight, but needs to hold always for typical executions. Your
+                bound can be a function of all the execution parameters ($\epsilon, \lambda,
+                f, p, T, n, t, k, u, \mu, \ell, s, \tau$). Prove that your bound holds.
+            \end{enumerate}
+
+
 \end{problems}

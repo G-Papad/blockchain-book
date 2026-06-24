@@ -658,6 +658,63 @@ and liveness follows from Chain Growth and Chain Quality together.
                     honest party. What is the Chain Quality of the chain adopted by your chosen honest party?
               \newpage
           \end{enumerate}
+      
+          \item Consider a proof-of-work longest chain blockchain in the UTXO model. The
+            protocol follows a confirmation rule with $k = 1$ (a transaction is considered
+            \emph{confirmed} if it is included in $\chain[{:}{-1}]$). Consider the
+            transaction graph in Figure~\ref{fig.utxo}. The coinbase reward is $50$ units.
+            The amount of each transaction's output is denoted as a number above it.
+            Imaginary txids are denoted within each transaction circle. Note that
+            transaction $7$ has two outputs, transaction $10$ has one input, transaction
+            $10$ has two outputs, transaction $11$ has two inputs, and transaction $8$ has
+            one input.
+
+            \begin{figure}[h]
+            \centering
+            \includegraphics[width=0.7 \columnwidth,keepaspectratio]{06-virtues/figures/utxo-problem-8.pdf}
+            \caption{The transaction graph for Problem~2.}
+            \label{fig.utxo}
+            \end{figure}
+
+            \begin{figure}[h]
+            \centering
+            \includegraphics[width=0.6 \columnwidth,keepaspectratio]{06-virtues/figures/tree-problem-8.pdf}
+            \caption{The block tree for Problem~2.}
+            \label{fig.tree}
+            \end{figure}
+
+            Consider the blocktree in Figure~\ref{fig.tree}. In this system, blocks can be
+            completely empty and coinbase transactions are not mandatory. The block contents
+            are exactly the following:
+
+            \begin{itemize}
+            \item The genesis block $0$ contains no transactions.
+            \item Block $1$ contains transaction $1$.
+            \item Block $2$ contains transaction $6$.
+            \item Block $3$ contains transactions $2, 3$.
+            \item Block $4$ contains transactions $4, 5$.
+            \item Block $5$ contains transactions $7, 8$.
+            \item Block $4'$ contains transaction $7$.
+            \item Block $5'$ is empty.
+            \item Block $6'$ contains transactions $10, 11$.
+            \item Block $7'$ contains transactions $8, 5$.
+            \end{itemize}
+
+            Answer the following questions with regard to the timeline of a full node honest
+            party $P$:
+
+            \begin{enumerate}
+            \item $P$ has adopted the chain $[0, 1, 2]$ and has received transactions $1$ and $6$ by round $1$. Subsequently, during round $1$, he receives all transactions in the following order: $2, 3, 4, 5, 7, 8, 9, 10, 11$. What is his mempool at the end of round $1$?
+            \item What is his UTXO set (according to the mempool) at the end of round $1$?
+            \item In round $2$, he receives blocks $3$, $4$ and $5$. What is his mempool at the end of round $2$?
+            \item What is his UTXO set (according to the mempool) at the end of round $2$?
+            \item In round $3$ he receives blocks $4'$, $5'$, $6'$ and $7'$. What is his chain at the end of round $3$?
+            \item What is his mempool at the end of round $3$?
+            \item What is his UTXO set (according to the mempool) at the end of round $3$?
+            \item What is his ledger at the end of round $3$?
+            \end{enumerate}
+
+            Use outpoints to designate the items in your UTXO set.
 \end{problems}
 
 \begin{figure}[htbp!]
